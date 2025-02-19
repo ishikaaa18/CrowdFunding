@@ -8,9 +8,8 @@ import AboutUs from "../pages/AboutUs";
 import HowItWorks from "../pages/HowItWorks";
 import ContactUs from "../pages/ContactUs";
 import Donate from "../pages/Donate";  
-import StartProject from "../pages/StartProject";  
-
-import ProtectedRoute from "../routes/ProtectedRoute";  // ✅ Fixed Path
+import StartProject from "../pages/StartProject"; 
+import ProtectedRoute from "../routes/ProtectedRoute";  
 
 const AppRoutes = () => {
   return (

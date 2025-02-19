@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         setUser(storedUser);
       }
     }
-  }, []); // ✅ Added dependency array to run only once
+  }, []); //  Added dependency array to run only once
 
   // Login function with useCallback (prevents unnecessary re-renders)
   const login = useCallback((userData) => {
