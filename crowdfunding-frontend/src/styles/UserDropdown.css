@@ -1,0 +1,57 @@
+.user-dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background 0.3s;
+  }
+  
+  .dropdown-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    background: white;
+    list-style: none;
+    padding: 10px 0;
+    margin-top: 8px;
+    width: 150px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+  
+  .dropdown-menu li {
+    padding: 8px 15px;
+    transition: background 0.3s;
+  }
+  
+  .dropdown-menu li a,
+  .logout-btn {
+    text-decoration: none;
+    color: black;
+    width: 100%;
+    display: block;
+    text-align: left;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .dropdown-menu li:hover {
+    background: #f1f1f1;
+  }
+  

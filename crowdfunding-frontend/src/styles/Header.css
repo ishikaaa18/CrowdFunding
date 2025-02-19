@@ -1,0 +1,110 @@
+/* ====== Navbar Styling ====== */
+.navbar {
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Logo Styling */
+.navbar-brand {
+    font-size: 1.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #f8c12c !important;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-brand:hover {
+    color: #f1e05a !important;
+}
+
+/* Navbar Links */
+.navbar-nav .nav-item {
+    margin-right: 20px;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #ffffff !important;
+    transition: all 0.3s ease-in-out;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #f8c12c !important;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Active Link */
+.navbar-nav .nav-link.active {
+    color: #f8c12c !important;
+    font-weight: bold;
+}
+
+/* ====== Dropdown Menu Styling ====== */
+.nav-item.dropdown .dropdown-menu {
+    background: #2c3e50;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-item.dropdown .dropdown-item {
+    color: #ffffff;
+    padding: 10px 15px;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-item.dropdown .dropdown-item:hover {
+    background: #f8c12c;
+    color: #000;
+}
+
+/* ====== Navbar Toggler Styling (Mobile) ====== */
+.navbar-toggler {
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+/* ====== Login & Register Buttons ====== */
+.navbar-nav .btn-warning {
+    font-weight: bold;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .btn-warning:hover {
+    background: #f1e05a;
+    color: #000;
+}
+
+/* ====== Responsive Design ====== */
+@media (max-width: 991px) {
+    .navbar-nav {
+        text-align: center;
+        background: rgba(0, 0, 0, 0.9);
+        padding: 15px;
+        border-radius: 8px;
+    }
+
+    .navbar-nav .nav-item {
+        margin-bottom: 10px;
+    }
+
+    .nav-item.dropdown .dropdown-menu {
+        text-align: center;
+    }
+}
