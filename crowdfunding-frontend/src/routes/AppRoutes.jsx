@@ -1,45 +1,47 @@
 import { Routes, Route } from "react-router-dom";
-import { Suspense, lazy } from "react";
-import ProtectedRoute from "./ProtectedRoute";  // ✅ Correct import
+import Home from "../pages/Home";
+import AboutUs from "../pages/AboutUs";
+import Campaigns from "../pages/Campaigns";
+import CampaignDetails from "../pages/CampaignDetails";
+import ContactUs from "../pages/ContactUs";
+import Dashboard from "../pages/Dashboard";
+import Donate from "../pages/Donate";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import Profile from "../pages/Profile";
+import Settings from "../pages/Settings";
+import StartProject from "../pages/StartProject";
+import ProtectedRoute from "./ProtectedRoute";
+import HowItWorks from "../components/Home/HowItWorks";
 
-// Lazy load pages for better performance
-const Home = lazy(() => import("../pages/Home"));
-const Project = lazy(() => import("../pages/Project"));
-const Login = lazy(() => import("../pages/Login"));
-const Register = lazy(() => import("../pages/Register"));
-const Dashboard = lazy(() => import("../pages/Dashboard"));
-const AboutUs = lazy(() => import("../pages/AboutUs"));
-const HowItWorks = lazy(() => import("../pages/HowItWorks"));
-const ContactUs = lazy(() => import("../pages/ContactUs"));
-const Donate = lazy(() => import("../pages/Donate"));  // ✅ Added
-const StartProject = lazy(() => import("../pages/StartProject"));  // ✅ Added
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<div className="text-center mt-5">Loading...</div>}>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/project/:projectId" element={<Project />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/how-it-works" element={<HowItWorks />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/donate" element={<Donate />} />  {/* ✅ Added */}
-        <Route path="/start-project" element={<StartProject />} />  {/* ✅ Added */}
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="/about" element={<AboutUs />} />
+      <Route path="/campaigns" element={<Campaigns />} />
+      <Route path="/campaign/:id" element={<CampaignDetails />} />
+      <Route path="/contact" element={<ContactUs />} />
+      <Route path="/donate" element={<Donate />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
 
-        {/* Protected Dashboard Route */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </Suspense>
+      {/* Protected Routes (Require Login) */}
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+      <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/start-project" element={<ProtectedRoute><StartProject /></ProtectedRoute>} />
+
+      {/* 404 Page Not Found */}
+      <Route path="*" element={<h1 style={{ textAlign: "center", margin: "50px" }}>404 - Page Not Found</h1>} />
+    </Routes>
   );
 };
 
 export default AppRoutes;
+
+
+

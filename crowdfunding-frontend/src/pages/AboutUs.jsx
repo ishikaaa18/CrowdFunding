@@ -1,55 +1,73 @@
 import React from "react";
-import "../styles/AboutUs.css"; 
-import missionImage from "../assets/mission-image.webp"; 
-import globalReachImage from "../assets/global-reach.jpeg"; 
+import "../styles/AboutUs.css";
+
+// WebP images for better performance
+import missionImage from "../assets/mission-image.webp";
+import globalReachImage from "../assets/global-reach.jpeg";
 import teamImage from "../assets/team-image.jpg";
 
 const AboutUs = () => {
   return (
     <div className="about-container">
-      <h1 className="about-header">About Us</h1>
+      <h1 className="about-header">About <span className="highlight">EmpowerFund</span></h1>
       <p className="about-subtext">
-        Welcome to <span className="highlight">EmpowerFund</span>, a next-generation crowdfunding platform designed to bring ideas to life!
-        Whether you're an entrepreneur, artist, or social cause advocate, our platform empowers you to raise funds and turn your dreams into reality.
+        EmpowerFund is a next-generation crowdfunding platform designed to bring ideas to life! 
+        Whether you're an entrepreneur, artist, or advocate for a cause, our platform empowers you to raise funds and turn dreams into reality.
       </p>
 
       {/* Mission Section */}
-      <div className="about-section">
+      <section className="about-section">
         <h2 className="about-title">🌟 Our Mission</h2>
         <div className="about-content">
-          <img src={missionImage} alt="Our Mission" className="about-image" />
+          <img 
+            src={missionImage} 
+            alt="EmpowerFund's mission to support innovation and social impact." 
+            className="about-image"
+            loading="lazy" 
+          />
           <p>
-            Our mission is to provide a <strong>secure</strong>, <strong>transparent</strong>, and <strong>user-friendly</strong> crowdfunding experience where innovators and backers can connect seamlessly. We aim to support creativity, entrepreneurship, and meaningful causes worldwide.
+            Our mission is to provide a <strong>secure</strong>, <strong>transparent</strong>, and <strong>user-friendly</strong> crowdfunding experience. 
+            We connect innovators and supporters globally, fostering creativity and meaningful change.
           </p>
         </div>
-      </div>
+      </section>
 
       {/* Why Choose Us Section */}
-      <div className="about-section">
+      <section className="about-section">
         <h2 className="about-title">💡 Why Choose Us?</h2>
         <div className="about-content">
-          <img src={globalReachImage} alt="Global Reach" className="about-image" />
+          <img 
+            src={globalReachImage} 
+            alt="EmpowerFund's global reach and funding opportunities." 
+            className="about-image"
+            loading="lazy" 
+          />
           <ul className="about-list">
-            <li><strong>🚀 Flexible Funding Options:</strong> Choose between fixed and flexible funding goals.</li>
-            <li><strong>🔒 Secure Transactions:</strong> We ensure safe and reliable payment processing.</li>
-            <li><strong>🌍 Global Reach:</strong> Raise funds and contribute from anywhere in the world.</li>
-            <li><strong>✅ Transparent & Trustworthy:</strong> We value transparency and support successful campaigns.</li>
+            <li>🚀 <strong>Flexible Funding Options:</strong> Choose between fixed and flexible funding goals.</li>
+            <li>🔒 <strong>Secure Transactions:</strong> Safe and reliable payment processing.</li>
+            <li>🌍 <strong>Global Reach:</strong> Raise funds and contribute from anywhere in the world.</li>
+            <li>✅ <strong>Transparent & Trustworthy:</strong> We support successful campaigns with complete transparency.</li>
           </ul>
         </div>
-      </div>
+      </section>
 
       {/* Contact Us Section */}
-      <div className="about-section contact">
+      <section className="about-section contact">
         <h2 className="about-title">📞 Contact Us</h2>
         <div className="about-content">
-          <img src={teamImage} alt="Team" className="about-image" />
+          <img 
+            src={teamImage} 
+            alt="EmpowerFund Team - Passionate about crowdfunding." 
+            className="about-image"
+            loading="lazy" 
+          />
           <div className="contact-info">
-            <p>Have any questions or need support? Feel free to reach out to us at:</p>
-            <p>✉️ Email: <a href="mailto:support@empowerfund.com">support@empowerfund.com</a></p>
+            <p>Need assistance? Reach out to us:</p>
+            <p>✉️ <a href="mailto:support@empowerfund.com">support@empowerfund.com</a></p>
             <p>📞 Phone: +123 456 7890</p>
           </div>
         </div>
-      </div>
+      </section>
 
       <p className="about-footer">Thank you for being part of our journey. Together, we make ideas happen! 🚀</p>
     </div>

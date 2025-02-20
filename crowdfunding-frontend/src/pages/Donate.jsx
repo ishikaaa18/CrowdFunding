@@ -11,20 +11,26 @@ const Donate = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!amount || !email || (!name && !isAnonymous)) {
+
+    // Basic validation
+    if (!amount.trim() || parseFloat(amount) <= 0) {
+      alert("Please enter a valid donation amount greater than ₹0.");
+      return;
+    }
+    if (!email.trim() || (!name.trim() && !isAnonymous)) {
       alert("Please provide all required details.");
       return;
     }
 
-    const donorName = isAnonymous ? "Anonymous Donor" : name;
-    alert(`Thank you, ${donorName}, for donating ₹${amount} via ${paymentMethod}!`);
+    const donorName = isAnonymous ? "Anonymous Donor" : name.trim();
+    alert(`🎉 Thank you, ${donorName}, for donating ₹${amount} via ${paymentMethod}!`);
 
-    // Here, integrate a payment API (e.g., Razorpay, Stripe, PayPal)
+    // Integrate a payment API here (e.g., Razorpay, Stripe, PayPal)
   };
 
   return (
     <div className="donate-container">
-      <h2>Make a Donation</h2>
+      <h2>Make a Donation 💖</h2>
       <form onSubmit={handleSubmit}>
         <label>Donation Amount (₹):</label>
         <input
@@ -40,7 +46,7 @@ const Donate = () => {
           type="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEmail(e.target.value.trim())}
           required
         />
 
@@ -82,7 +88,7 @@ const Donate = () => {
           onChange={(e) => setMessage(e.target.value)}
         ></textarea>
 
-        <button type="submit">Donate Now</button>
+        <button type="submit">💰 Donate Now</button>
       </form>
     </div>
   );

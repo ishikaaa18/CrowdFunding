@@ -1,0 +1,38 @@
+.why-choose-us {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f9f9f9;
+}
+
+.why-choose-us h2 {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.features-container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.feature {
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+}
+
+.feature-icon {
+  font-size: 3rem;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.feature h3 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.feature p {
+  font-size: 1rem;
+  color: #555;
+}

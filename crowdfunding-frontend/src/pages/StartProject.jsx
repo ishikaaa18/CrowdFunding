@@ -1,5 +1,5 @@
+import "../styles/StartProject.css"; // ✅ Import CSS properly
 import ProjectForm from "../components/Forms/ProjectForm";
-<link rel="stylesheet" href="StartProject.css" />
 
 const StartProject = () => {
   const handleProjectSubmit = (formData) => {
@@ -16,6 +16,7 @@ const StartProject = () => {
 };
 
 export default StartProject;
+
 
 
   

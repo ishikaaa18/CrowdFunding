@@ -1,0 +1,47 @@
+.newsletter {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .newsletter h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+  
+  .newsletter p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .newsletter-form {
+    display: flex;
+    justify-content: center;
+    max-width: 400px;
+    margin: 0 auto;
+    gap: 10px;
+  }
+  
+  .newsletter-form input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .newsletter-form button {
+    padding: 10px 20px;
+    border: none;
+    background-color: white;
+    color: #007bff;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .newsletter-form button:hover {
+    background-color: #f1f1f1;
+  }
+  

@@ -1,16 +1,22 @@
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
-import LoginForm from "../components/Auth/LoginForm";
+import LoginForm from "../components/Forms/LoginForm";
+import authService from "../services/authService";
+
 
 const Login = () => {
   const { user } = useContext(AuthContext);
 
-  if (user) {
-    return <Navigate to="/dashboard" />; // Redirect if already logged in
-  }
+  // If user is already logged in, redirect to dashboard
+  if (user) return <Navigate to="/dashboard" replace />;
 
-  return <LoginForm />;
+  return (
+    <div className="login-page">
+      <LoginForm />
+    </div>
+  );
 };
 
-export default Login;  // ✅ Keep only one default export
+export default Login;
+
