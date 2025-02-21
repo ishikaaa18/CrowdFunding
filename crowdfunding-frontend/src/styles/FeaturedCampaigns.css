@@ -13,7 +13,9 @@
     display: flex;
     justify-content: center;
     gap: 20px;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;  /* Prevents wrapping to the next line */
+    overflow-x: auto;   /* Enables horizontal scrolling if needed */
+    padding-bottom: 10px; /* Prevents scrollbar from hiding content */
   }
   
   .campaign-card {

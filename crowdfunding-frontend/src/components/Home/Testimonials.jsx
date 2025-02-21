@@ -1,21 +1,26 @@
 import React from "react";
 import "../../styles/Testimonials.css";
 
+// Import images correctly
+import testimonial1 from "../../assets/images/testimonial1.jpg";
+import testimonial2 from "../../assets/images/testimonial2.jpg";
+import testimonial3 from "../../assets/images/testimonial3.jpg";
+
 const testimonialsData = [
   {
     name: "Amit Roy",
     quote: "This platform helped me raise funds for my startup. Truly life-changing!",
-    image: "https://via.placeholder.com/80",
+    image: testimonial1,  // Use imported image
   },
   {
     name: "Sneha Verma",
     quote: "Seamless experience and amazing support. Highly recommend!",
-    image: "https://via.placeholder.com/80",
+    image: testimonial2,
   },
   {
     name: "Rahul Das",
     quote: "A fantastic way to bring communities together for a cause.",
-    image: "https://via.placeholder.com/80",
+    image: testimonial3,
   },
 ];
 
@@ -37,3 +42,4 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+

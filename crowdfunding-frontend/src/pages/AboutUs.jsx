@@ -1,10 +1,10 @@
 import React from "react";
 import "../styles/AboutUs.css";
 
-// WebP images for better performance
-import missionImage from "../assets/mission-image.webp";
-import globalReachImage from "../assets/global-reach.jpeg";
-import teamImage from "../assets/team-image.jpg";
+import missionImage from "../assets/images/mission-image.webp";
+import globalReachImage from "../assets/images/global-reach.jpeg";
+import teamImage from "../assets/images/team-image.jpg";
+
 
 const AboutUs = () => {
   return (

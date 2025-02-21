@@ -1,25 +1,30 @@
 import React from "react";
 import "../../styles/FeaturedCampaigns.css";
 
+// Import images properly
+import campaign1 from "../../assets/images/campaign1.jpg";
+import campaign2 from "../../assets/images/campaign2.jpg";
+import campaign3 from "../../assets/images/campaign3.webp";
+
 const campaigns = [
   {
     id: 1,
     title: "Help Build a School for Underprivileged Children",
-    image: "/images/campaign1.jpg",
+    image: campaign1,  // Use imported images
     raised: 7500,
     goal: 10000,
   },
   {
     id: 2,
     title: "Support Cancer Treatment for John Doe",
-    image: "/images/campaign2.jpg",
+    image: campaign2,
     raised: 12000,
     goal: 15000,
   },
   {
     id: 3,
     title: "Provide Clean Water to Rural Villages",
-    image: "/images/campaign3.webp",
+    image: campaign3,
     raised: 5000,
     goal: 8000,
   },
@@ -52,5 +57,4 @@ const FeaturedCampaigns = () => {
 };
 
 export default FeaturedCampaigns;
-
 
