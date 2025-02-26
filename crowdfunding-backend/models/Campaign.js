@@ -4,12 +4,12 @@ const CampaignSchema = new mongoose.Schema(
   {
     title: { type: String, required: true },
     description: { type: String, required: true },
-    creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // Reference to User
+    creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     goalAmount: { type: Number, required: true },
-    raisedAmount: { type: Number, default: 0 },
+    raisedAmount: { type: Number, default: 0 }, // ✅ Default value added
     deadline: { type: Date, required: true },
-    status: { type: String, enum: ["active", "completed"], default: "active" },
-    image: { type: String }, // Image URL for the campaign
+    status: { type: String, enum: ["active", "completed"], default: "active" }, // ✅ Default value added
+    image: { type: String, required: true }
   },
   { timestamps: true }
 );

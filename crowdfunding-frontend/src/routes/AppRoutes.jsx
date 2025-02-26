@@ -13,9 +13,12 @@ import Settings from "../pages/Settings";
 import StartProject from "../pages/StartProject";
 import ProtectedRoute from "./ProtectedRoute";
 import HowItWorks from "../components/Home/HowItWorks";
-
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const AppRoutes = () => {
+  const { user } = useContext(AuthContext);
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -33,15 +36,29 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-      <Route path="/start-project" element={<ProtectedRoute><StartProject /></ProtectedRoute>} />
+      
+      {/* Redirect "Start a Campaign" to Register if Not Logged In */}
+      <Route path="/start-project" element={user ? <ProtectedRoute><StartProject /></ProtectedRoute> : <Register />} />
 
       {/* 404 Page Not Found */}
-      <Route path="*" element={<h1 style={{ textAlign: "center", margin: "50px" }}>404 - Page Not Found</h1>} />
+      <Route
+        path="*"
+        element={
+          <div style={{ textAlign: "center", margin: "50px" }}>
+            <h1>404 - Page Not Found</h1>
+            <p>The page you are looking for does not exist.</p>
+            <a href="/" style={{ textDecoration: "none", color: "#007BFF", fontWeight: "bold" }}>
+              Go Back to Home
+            </a>
+          </div>
+        }
+      />
     </Routes>
   );
 };
 
 export default AppRoutes;
+
 
 
 

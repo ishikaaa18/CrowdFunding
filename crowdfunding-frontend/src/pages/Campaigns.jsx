@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { getAllCampaigns } from "../services/campaignService"; // Import API service
 import SearchBar from "../components/common/SearchBar";
-import "../styles/Campaigns.css"; // Import CSS for styling
+import "../styles/Campaigns.css";
 
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
@@ -11,10 +11,10 @@ const Campaigns = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/campaigns") // Adjust backend API
-      .then((response) => {
-        setCampaigns(response.data);
-        setFilteredCampaigns(response.data);
+    getAllCampaigns()
+      .then((data) => {
+        setCampaigns(data);
+        setFilteredCampaigns(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -63,5 +63,4 @@ const Campaigns = () => {
 };
 
 export default Campaigns;
-
 

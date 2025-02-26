@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { getCampaignById } from "../services/campaignService"; // Import API service
 import ChatBox from "../components/common/ChatBox";
 import Payment from "../components/common/Payment";
-import "../styles/CampaignDetails.css"; // Import CSS for styling
+import "../styles/CampaignDetails.css";
 
 const CampaignDetails = () => {
   const { id } = useParams();
@@ -12,9 +12,9 @@ const CampaignDetails = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/api/campaigns/${id}`)
-      .then((response) => {
-        setCampaign(response.data);
+    getCampaignById(id)
+      .then((data) => {
+        setCampaign(data);
         setLoading(false);
       })
       .catch((error) => {
@@ -29,25 +29,21 @@ const CampaignDetails = () => {
 
   return (
     <div className="campaign-container">
-      {/* Campaign Details */}
       <div className="campaign-header">
         <h2>{campaign.title}</h2>
         <p className="campaign-description">{campaign.description}</p>
       </div>
 
-      {/* Campaign Stats */}
       <div className="campaign-stats">
         <h4>🎯 Goal: <span>${campaign.goalAmount.toLocaleString()}</span></h4>
         <h4>💰 Raised: <span>${campaign.raisedAmount.toLocaleString()}</span></h4>
       </div>
 
-      {/* Payment Section */}
       <div className="campaign-section">
         <h3>Make a Contribution</h3>
         <Payment campaignId={campaign._id} />
       </div>
 
-      {/* Chat Section */}
       <div className="campaign-section">
         <h3>Join the Conversation</h3>
         <ChatBox campaignId={campaign._id} user="User123" />
@@ -57,4 +53,5 @@ const CampaignDetails = () => {
 };
 
 export default CampaignDetails;
+
 

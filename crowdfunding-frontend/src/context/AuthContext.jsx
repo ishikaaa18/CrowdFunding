@@ -1,30 +1,30 @@
 import { createContext, useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
+// Create AuthContext
 export const AuthContext = createContext();
 
+// AuthProvider Component
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
-  // Load user from localStorage (only if window is available)
+  // Load user from localStorage on app load
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-      if (storedUser) {
-        setUser(storedUser);
-      }
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (storedUser) {
+      setUser(storedUser);
     }
-  }, []); //  Added dependency array to run only once
+  }, []);
 
-  // Login function with useCallback (prevents unnecessary re-renders)
+  // Login function
   const login = useCallback((userData) => {
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     navigate("/dashboard");
   }, [navigate]);
 
-  // Logout function with useCallback
+  // Logout function
   const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem("user");
@@ -37,3 +37,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+

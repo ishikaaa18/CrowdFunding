@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import UserDropdown from "./UserDropdown";
 import "../../styles/Header.css"; // Import CSS for styling
@@ -7,6 +7,15 @@ import "../../styles/Header.css"; // Import CSS for styling
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleStartCampaign = () => {
+    if (user) {
+      navigate("/start-project"); // Redirect to campaign creation page
+    } else {
+      navigate("/register"); // Redirect to register page if not logged in
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark header-nav">
@@ -68,4 +77,5 @@ const Header = () => {
 };
 
 export default Header;
+
 

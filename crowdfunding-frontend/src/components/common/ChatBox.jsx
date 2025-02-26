@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { ref, push, onValue, off } from "firebase/database";
-import { db } from "../../services/firebaseConfig"; // ✅ Ensure correct path
 
 
 const ChatBox = ({ campaignId, user }) => {
