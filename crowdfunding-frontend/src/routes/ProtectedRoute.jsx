@@ -1,13 +1,17 @@
 import { useContext } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext"; // ✅ Correct import path
+import {AuthContext} from "../context/AuthContext"; // ✅ Ensure correct import
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useContext(AuthContext);
-  const location = useLocation(); // ✅ Capture the current location
+  const location = useLocation();
 
-  return user ? children : <Navigate to="/login" state={{ from: location }} replace />;
+  if (!user) {
+    console.log("🔹 User not logged in, redirecting to login...");
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
 };
 
 export default ProtectedRoute;
-

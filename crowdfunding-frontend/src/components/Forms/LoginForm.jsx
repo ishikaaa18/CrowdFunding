@@ -1,48 +1,61 @@
-import { useState, useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { loginUser } from "../../services/authService"; // Import API call function
+import { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext"; // ✅ Correct Import
 
 const LoginForm = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext); // ✅ Use the login function
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(""); // ✅ Store error message
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(""); // Clear previous errors
+
     try {
-      const userData = await loginUser(email, password);
-      login(userData); // Update auth context
-    } catch (err) {
-      setError(err.message);
+      const response = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "Invalid credentials");
+
+      login(data); // ✅ Save user in context & redirect
+    } catch (error) {
+      setError(error.message);
+      console.error("Login Error:", error.message);
     }
   };
 
   return (
-    <form onSubmit={handleLogin} className="p-4 border rounded">
-      <h3>Login</h3>
-      {error && <p className="text-danger">{error}</p>}
+    <form onSubmit={handleSubmit}>
+      <label htmlFor="email">Email:</label>
       <input
         type="email"
-        className="form-control my-2"
-        placeholder="Email"
+        id="email"
+        name="email"
+        placeholder="Enter your email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
       />
+
+      <label htmlFor="password">Password:</label>
       <input
         type="password"
-        className="form-control my-2"
-        placeholder="Password"
+        id="password"
+        name="password"
+        placeholder="Enter your password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
       />
-      <button type="submit" className="btn btn-primary w-100">Login</button>
+
+      {error && <p style={{ color: "red" }}>{error}</p>} {/* ✅ Show errors */}
+      <button type="submit">Login</button>
     </form>
   );
 };
 
 export default LoginForm;
-
-

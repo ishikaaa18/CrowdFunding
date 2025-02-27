@@ -9,6 +9,7 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
+import StartCampaign from "../pages/StartCampaign";  // ✅ Updated import
 import ProtectedRoute from "./ProtectedRoute";
 import HowItWorks from "../components/Home/HowItWorks";
 import { useContext } from "react";
@@ -22,7 +23,7 @@ const AppRoutes = () => {
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/campaigns" element={<Campaigns />} />
-      <Route path="/campaigns/:id" element={<CampaignDetails />} />  {/* ✅ Fixed path */}
+      <Route path="/campaigns/:id" element={<CampaignDetails />} />
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/donate" element={<Donate />} />
       <Route path="/login" element={<Login />} />
@@ -35,7 +36,7 @@ const AppRoutes = () => {
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       
       {/* Redirect "Start a Campaign" to Register if Not Logged In */}
-      <Route path="/start-project" element={user ? <ProtectedRoute><StartProject /></ProtectedRoute> : <Register />} />
+      <Route path="/start-campaign" element={user ? <ProtectedRoute><StartCampaign /></ProtectedRoute> : <Register />} />  {/* ✅ Updated path & component */}
 
       {/* 404 Page Not Found */}
       <Route
@@ -55,6 +56,7 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+
 
 
 

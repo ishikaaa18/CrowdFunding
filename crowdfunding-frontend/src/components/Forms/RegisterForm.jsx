@@ -3,42 +3,42 @@ import { AuthContext } from "../../context/AuthContext";
 import authService from "../../services/authService";
 
 const RegisterForm = () => {
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);  // ✅ Use login function instead of setUser
+
   const [formData, setFormData] = useState({
-    username: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
   const [error, setError] = useState("");
 
-  // Handle input changes
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validate form fields
   const validateForm = () => {
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
       return false;
     }
-    setError(""); // Clear previous errors
+    setError("");
     return true;
   };
 
-  // Handle form submission
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     try {
       const userData = await authService.register({
-        username: formData.username,
+        name: formData.name,
         email: formData.email,
         password: formData.password,
       });
-      login(userData); // Log in the user after successful registration
+
+      login(userData);  // ✅ Automatically log in and redirect user
+
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
     }
@@ -50,10 +50,10 @@ const RegisterForm = () => {
       {error && <p className="text-danger">{error}</p>}
       <input
         type="text"
-        name="username"
+        name="name"
         className="form-control my-2"
-        placeholder="Username"
-        value={formData.username}
+        placeholder="Full Name"
+        value={formData.name}
         onChange={handleChange}
         required
       />
@@ -90,4 +90,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-

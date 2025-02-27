@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://your-backend.com/auth"; // Replace with actual backend URL
+const API_URL = "http://localhost:5000/api/auth"; // Update if needed
 
 const authService = {
   register: async (userData) => {
@@ -24,9 +24,8 @@ const authService = {
   }
 };
 
-// ✅ Explicitly exporting loginUser for direct imports
-export const loginUser = authService.login;
-
-export default authService;
+// 🔹 Fix: Correctly Export login Function
+export const loginUser = authService.login; // ✅ Named export for loginUser
+export default authService; // ✅ Default export for authService
 
 
