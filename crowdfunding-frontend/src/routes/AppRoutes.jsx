@@ -1,6 +1,5 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
-import AboutUs from "../pages/AboutUs";
 import Campaigns from "../pages/Campaigns";
 import CampaignDetails from "../pages/CampaignDetails";
 import ContactUs from "../pages/ContactUs";
@@ -10,7 +9,6 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
-import StartProject from "../pages/StartProject";
 import ProtectedRoute from "./ProtectedRoute";
 import HowItWorks from "../components/Home/HowItWorks";
 import { useContext } from "react";
@@ -23,9 +21,8 @@ const AppRoutes = () => {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
-      <Route path="/about" element={<AboutUs />} />
       <Route path="/campaigns" element={<Campaigns />} />
-      <Route path="/campaign/:id" element={<CampaignDetails />} />
+      <Route path="/campaigns/:id" element={<CampaignDetails />} />  {/* ✅ Fixed path */}
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/donate" element={<Donate />} />
       <Route path="/login" element={<Login />} />
@@ -58,6 +55,7 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+
 
 
 

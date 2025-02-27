@@ -1,18 +1,16 @@
-const Donation = require('../models/Donation');
-const Project = require('../models/Project');
+const Donation = require("../models/Donation");
+const Campaign = require("../models/Campaign");
 
-// @desc    Make a donation
-// @route   POST /api/donations
-// @access  Private
+// ✅ Make a donation
 const makeDonation = async (req, res) => {
   try {
     const { campaignId, amount, message } = req.body;
-    const donorId = req.user.id; // Extract donor from auth middleware
+    const donorId = req.user._id; // ✅ Extract donor ID correctly
 
-    // Check if project exists
-    const project = await Project.findById(campaignId);
-    if (!project) {
-      return res.status(404).json({ message: 'Campaign not found' });
+    // Check if campaign exists
+    const campaign = await Campaign.findById(campaignId);
+    if (!campaign) {
+      return res.status(404).json({ message: "Campaign not found" });
     }
 
     // Create a new donation
@@ -25,27 +23,27 @@ const makeDonation = async (req, res) => {
 
     await donation.save();
 
-    // Update project's collected amount
-    project.raisedAmount += amount;
-    await project.save();
+    // Update campaign's collected amount
+    campaign.raisedAmount += amount;
+    await campaign.save();
 
-    res.status(201).json({ message: 'Donation successful', donation });
+    res.status(201).json({ message: "Donation successful", donation });
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error("❌ Error making donation:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-// @desc    Get donations for a specific campaign
-// @route   GET /api/donations/:campaignId
-// @access  Public
+// ✅ Get donations for a specific campaign
 const getCampaignDonations = async (req, res) => {
   try {
     const { campaignId } = req.params;
-    const donations = await Donation.find({ campaignId }).populate('donorId', 'name email');
+    const donations = await Donation.find({ campaignId }).populate("donorId", "name email");
 
     res.status(200).json(donations);
   } catch (error) {
-    res.status(500).json({ message: 'Server error', error });
+    console.error("❌ Error fetching donations:", error);
+    res.status(500).json({ message: "Server error" });
   }
 };
 

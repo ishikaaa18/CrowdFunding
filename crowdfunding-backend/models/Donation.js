@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const donationSchema = new mongoose.Schema({
   campaignId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Project',
+    ref: "Campaign", // ✅ FIXED: Changed "Project" to "Campaign"
     required: true
   },
   donorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true
   },
   amount: {
@@ -17,7 +17,7 @@ const donationSchema = new mongoose.Schema({
   },
   message: {
     type: String,
-    default: ''
+    default: ""
   },
   createdAt: {
     type: Date,
@@ -25,6 +25,7 @@ const donationSchema = new mongoose.Schema({
   }
 });
 
-const Donation = mongoose.model('Donation', donationSchema);
+const Donation = mongoose.model("Donation", donationSchema);
 module.exports = Donation;
+
 
