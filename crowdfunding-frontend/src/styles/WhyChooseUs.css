@@ -1,38 +1,54 @@
-.why-choose-us {
-  text-align: center;
-  padding: 50px 20px;
-  background-color: #f9f9f9;
-}
-
-.why-choose-us h2 {
-  font-size: 2rem;
-  margin-bottom: 30px;
-}
-
+/* Features container using CSS Grid for better layout */
 .features-container {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 equal columns */
+  gap: 20px;
+  justify-content: center;
+  max-width: 1200px;
+  margin: auto;
 }
 
+/* Feature Box */
 .feature {
-  width: 300px;
-  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  box-sizing: border-box;
   text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.feature:hover {
+  transform: scale(1.05);
 }
 
 .feature-icon {
-  font-size: 3rem;
-  color: #007bff;
-  margin-bottom: 10px;
+  font-size: 2.5rem;
+  color: #ff6347;
+  margin-bottom: 15px;
 }
 
 .feature h3 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
   margin-bottom: 10px;
 }
 
 .feature p {
   font-size: 1rem;
   color: #555;
+}
+
+/* Responsive Layout */
+@media (max-width: 1024px) {
+  .features-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablets */
+  }
+}
+
+@media (max-width: 600px) {
+  .features-container {
+    grid-template-columns: repeat(1, 1fr); /* 1 per row on mobile */
+  }
 }

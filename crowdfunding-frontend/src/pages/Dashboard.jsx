@@ -2,10 +2,10 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 import "../styles/Dashboard.css";
-import { FaEdit, FaTrashAlt, FaPlusCircle } from "react-icons/fa"; // Icons for better UX
+import { FaEdit, FaTrashAlt, FaPlusCircle, FaSignOutAlt } from "react-icons/fa"; // Added logout icon
 
 const Dashboard = () => {
-  const { user, login } = useContext(AuthContext);
+  const { user, login, logout } = useContext(AuthContext); // ✅ Added logout
   const [isEditing, setIsEditing] = useState(false);
   const [updatedUser, setUpdatedUser] = useState({
     name: user?.name || "",
@@ -33,6 +33,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
+      {/* Sidebar */}
       <div className="dashboard-sidebar">
         <h3 className="sidebar-title">Dashboard</h3>
         <ul className="sidebar-nav">
@@ -41,8 +42,13 @@ const Dashboard = () => {
           <li><a href="#contributions">Your Contributions</a></li>
           <li><a href="#settings">Settings</a></li>
         </ul>
+        {/* ✅ Logout Button */}
+        <button className="btn btn-danger logout-btn" onClick={logout}>
+          <FaSignOutAlt /> Logout
+        </button>
       </div>
 
+      {/* Main Content */}
       <div className="dashboard-main">
         <h1 className="dashboard-header">Welcome, {user?.name}!</h1>
 
@@ -131,5 +137,7 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+
 
 

@@ -10,7 +10,7 @@ const testimonialsData = [
   {
     name: "Amit Roy",
     quote: "This platform helped me raise funds for my startup. Truly life-changing!",
-    image: testimonial1,  // Use imported image
+    image: testimonial1,
   },
   {
     name: "Sneha Verma",
@@ -26,7 +26,7 @@ const testimonialsData = [
 
 const Testimonials = () => {
   return (
-    <section className="testimonials">
+    <section className="testimonials container">
       <h2>What Our Users Say</h2>
       <div className="testimonials-container">
         {testimonialsData.map((testimonial, index) => (
@@ -42,4 +42,6 @@ const Testimonials = () => {
 };
 
 export default Testimonials;
+
+
 

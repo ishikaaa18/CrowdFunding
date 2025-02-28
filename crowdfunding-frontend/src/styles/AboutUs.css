@@ -79,7 +79,6 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .about-content {
-    flex-direction: column;
     text-align: center;
   }
   .about-image {

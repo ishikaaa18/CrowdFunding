@@ -11,11 +11,13 @@ const HowItWorks = () => {
   return (
     <section className="how-it-works">
       <h2>How It Works</h2>
-      <div className="steps">
+      <div className="row justify-content-center">
         {steps.map((step, index) => (
-          <div className="step" key={index}>
-            <h3>{step.title}</h3>
-            <p>{step.description}</p>
+          <div className="col-lg-4 col-md-6 col-12 mb-4" key={index}>
+            <div className="step">
+              <h3>{step.title}</h3>
+              <p>{step.description}</p>
+            </div>
           </div>
         ))}
       </div>
@@ -24,4 +26,5 @@ const HowItWorks = () => {
 };
 
 export default HowItWorks;
+
 

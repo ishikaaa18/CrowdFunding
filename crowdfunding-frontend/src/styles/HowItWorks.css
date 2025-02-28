@@ -1,34 +1,45 @@
+/* General Styles for How It Works */
 .how-it-works {
-  padding: 60px 20px;
+  padding: 40px 20px;
+  background-color: #f9f9f9;
   text-align: center;
-  background-color: #e9ecef;
 }
 
 .how-it-works h2 {
-  font-size: 2rem;
+  font-size: 2.5rem;
+  font-weight: bold;
   margin-bottom: 30px;
+  color: #333;
 }
 
-.steps {
-  display: flex;
-  justify-content: space-around;
-  gap: 30px;
-}
-
+/* Individual Step */
 .step {
   background-color: #fff;
-  padding: 20px;
   border-radius: 8px;
-  width: 30%;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  box-sizing: border-box;
+  transition: transform 0.3s ease;
+}
+
+.step:hover {
+  transform: scale(1.05);
 }
 
 .step h3 {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  color: #333;
   margin-bottom: 10px;
 }
 
 .step p {
   font-size: 1rem;
   color: #555;
+}
+
+/* Bootstrap grid will handle responsiveness */
+@media (max-width: 768px) {
+  .step {
+    margin-bottom: 20px;
+  }
 }

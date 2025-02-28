@@ -1,85 +1,13 @@
-/* General Styles */
+/* General Styles for Home */
 .home-container {
-  margin: 0 auto;
-  padding: 0;
-  background-color: #f9f9f9;
+  width: auto;  /* Ensures the container has a max width */
+  margin: 0 auto;     /* Centers the container */
+  padding: 0 20px;    /* Adds some space on the sides */
 }
 
-header {
-  background-color: #333;
-  padding: 20px 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.logo a {
-  font-size: 2rem;
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 20px;
-}
-
-.navbar ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-.navbar ul li a {
-  color: #fff;
-  font-size: 1rem;
-  text-decoration: none;
-}
-
-.cta-button {
-  background-color: #ff6347;
-  padding: 8px 20px;
-  border-radius: 4px;
-  color: #fff;
-}
-
-.cta-button:hover {
-  background-color: #ff4500;
-}
-
-footer {
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 20px;
-}
-
-footer .footer-links ul {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-footer .footer-social {
-  margin: 20px 0;
-}
-
-footer .footer-social a {
-  margin: 0 10px;
-  color: #fff;
-  text-decoration: none;
-}
-
-footer p {
-  margin-top: 10px;
-}
-
-/* Responsive Styles */
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
-  .navbar ul {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  footer .footer-links ul {
-    flex-direction: column;
+  .home-container {
+    padding: 0 10px;  /* Reduce padding on smaller screens */
   }
 }

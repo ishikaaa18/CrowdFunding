@@ -40,8 +40,7 @@
   margin: auto;
   padding: 40px 20px;
   background: #f8f9fa;
-  display: flex;
-  flex-direction: column; /* Stack elements vertically */
+  display: flex; 
   align-items: center; /* Center elements */
   width: 100%;
 }

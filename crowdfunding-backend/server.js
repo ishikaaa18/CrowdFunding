@@ -7,6 +7,7 @@ const authRoutes = require('./routes/authRoutes.js');
 const donationRoutes = require('./routes/donationRoutes.js');
 const campaignRoutes = require("./routes/campaignRoutes"); // ✅ Using only campaigns
 
+
 // Load environment variables
 dotenv.config();
 
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 // Fix CORS: Allow frontend (localhost:5173) to access backend (localhost:5000)
 app.use(cors({
-  origin: "http://localhost:5173", // ✅ Allow frontend
+  origin: "http://localhost:5174", // ✅ Allow frontend
   credentials: true, // ✅ Allow cookies & authentication headers
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // ✅ Add OPTIONS method for preflight requests
   allowedHeaders: ["Content-Type", "Authorization"] // ✅ Allow headers for auth

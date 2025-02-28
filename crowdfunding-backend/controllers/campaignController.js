@@ -1,3 +1,5 @@
+import Campaign from "../models/Campaign.js"; // Ensure you import the model
+
 const createCampaign = async (req, res) => {
   try {
     console.log("📝 Received Request Body:", req.body); // Debugging log
@@ -8,7 +10,8 @@ const createCampaign = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    const newCampaign = new Campaign({
+    // ✅ Create and save the campaign
+    const newCampaign = await Campaign.create({
       title,
       description,
       goalAmount: Number(goalAmount),
@@ -18,11 +21,11 @@ const createCampaign = async (req, res) => {
       image,
     });
 
-    res
-      .status(201)
-      .json({ message: "Campaign created successfully", campaign });
+    res.status(201).json({ message: "Campaign created successfully", campaign: newCampaign });
   } catch (error) {
     console.error("❌ Error creating campaign:", error);
     res.status(500).json({ message: "Server error creating campaign" });
   }
 };
+
+export default createCampaign;
