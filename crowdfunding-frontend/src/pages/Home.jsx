@@ -8,12 +8,11 @@ import Newsletter from "../components/Home/Newsletter";
 import AdvertisementCarousel from "../components/Home/AdvertisementCarousel";
 import "../styles/Home.css";
 
-
 const Home = () => {
   return (
     <div className="home-container">
       <ImpactBanner />
-      <AdvertisementCarousel/>
+      <AdvertisementCarousel />
       <FeaturedCampaigns />
       <HowItWorks />
       <WhyChooseUs />
@@ -24,4 +23,3 @@ const Home = () => {
 };
 
 export default Home;
-

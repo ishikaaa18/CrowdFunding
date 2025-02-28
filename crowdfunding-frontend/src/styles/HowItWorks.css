@@ -1,40 +1,26 @@
 .how-it-works {
+  padding: 60px 20px;
   text-align: center;
-  padding: 50px 20px;
-  background: #f8f8f8;
+  background-color: #e9ecef;
 }
 
 .how-it-works h2 {
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #333;
 }
 
-.steps-container {
+.steps {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   gap: 30px;
-  flex-wrap: wrap;
 }
 
 .step {
-  background: #fff;
-  border-radius: 10px;
+  background-color: #fff;
   padding: 20px;
-  width: 300px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease-in-out;
-}
-
-.step:hover {
-  transform: translateY(-5px);
-}
-
-.step-icon {
-  font-size: 3rem;
-  color: #ff7f50;
-  margin-bottom: 10px;
+  border-radius: 8px;
+  width: 30%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .step h3 {
@@ -44,5 +30,5 @@
 
 .step p {
   font-size: 1rem;
-  color: #666;
+  color: #555;
 }

@@ -14,6 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import HowItWorks from "../components/Home/HowItWorks";
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import CampaignForm from "../components/Forms/CampaignForm";
 
 const AppRoutes = () => {
   const { user } = useContext(AuthContext);
@@ -34,6 +35,8 @@ const AppRoutes = () => {
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+      <Route path="/campaign-form" element={<ProtectedRoute><CampaignForm /></ProtectedRoute>} />
+
       
       {/* Redirect "Start a Campaign" to Register if Not Logged In */}
       <Route path="/start-campaign" element={user ? <ProtectedRoute><StartCampaign /></ProtectedRoute> : <Register />} />  {/* ✅ Updated path & component */}

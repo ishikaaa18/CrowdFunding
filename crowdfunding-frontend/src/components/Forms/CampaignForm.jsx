@@ -7,7 +7,6 @@ const CampaignForm = () => {
     description: "",
     goalAmount: "",
     deadline: "",
-    category: "",
     image: null,
   });
 
@@ -93,3 +92,4 @@ const CampaignForm = () => {
 };
 
 export default CampaignForm;
+
