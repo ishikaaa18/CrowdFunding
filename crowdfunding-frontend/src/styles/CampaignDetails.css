@@ -1,32 +1,83 @@
+.campaign-details {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+}
 
-  .campaign-stats {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+.campaign-title {
+  font-size: 28px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.campaign-image {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+strong {
+  color: #222;
+}
+
+.loading-text,
+.error-text {
+  font-size: 18px;
+  color: #ff4d4d;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.donate-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 12px 25px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  background: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.donate-button:hover {
+  background: #0056b3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .campaign-details {
+    max-width: 90%;
+    padding: 15px;
   }
-  
-  .campaign-stats h4 {
-    font-size: 1.2rem;
-    color: #555;
+
+  .campaign-title {
+    font-size: 24px;
   }
-  
-  .campaign-stats span {
-    font-weight: bold;
-    color: #ff9800;
+
+  p {
+    font-size: 14px;
   }
- 
-  .loading-text {
-    text-align: center;
-    font-size: 1.2rem;
-    color: #888;
+
+  .donate-button {
+    font-size: 16px;
+    padding: 10px 20px;
   }
-  
-  .error-text {
-    text-align: center;
-    font-size: 1.2rem;
-    color: red;
-  }
-  
+}

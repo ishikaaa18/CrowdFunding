@@ -1,95 +1,78 @@
 import { useState } from "react";
-import "../styles/Donate.css"; // Import styles
+import { Link } from "react-router-dom";
+import "../styles/Donate.css"; // Ensure styling
+import paymentImage from "../assets/images/credit-card.png"; // Replace with actual image
 
 const Donate = () => {
   const [amount, setAmount] = useState("");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("UPI");
-  const [message, setMessage] = useState("");
-  const [isAnonymous, setIsAnonymous] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleDonate = (e) => {
     e.preventDefault();
-
-    // Basic validation
-    if (!amount.trim() || parseFloat(amount) <= 0) {
-      alert("Please enter a valid donation amount greater than ₹0.");
-      return;
-    }
-    if (!email.trim() || (!name.trim() && !isAnonymous)) {
-      alert("Please provide all required details.");
-      return;
-    }
-
-    const donorName = isAnonymous ? "Anonymous Donor" : name.trim();
-    alert(`🎉 Thank you, ${donorName}, for donating ₹${amount} via ${paymentMethod}!`);
-
-    // Integrate a payment API here (e.g., Razorpay, Stripe, PayPal)
+    // Implement donation API call here
+    alert(`Thank you for donating ₹${amount}!`);
   };
 
   return (
-    <div className="donate-container">
-      <h2>Make a Donation 💖</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Donation Amount (₹):</label>
+    <div className="donation-container">
+      <h1 className="donation-heading">Make a Difference with Your Donation</h1>
+
+      <p>
+        Your contribution helps us create meaningful change. Every rupee counts!
+      </p>
+
+      {/* Donation Progress */}
+      <div className="donation-progress">
+        <div className="progress-bar" style={{ width: "70%" }}></div>
+      </div>
+      <p>
+        <strong>₹70,000</strong> raised out of ₹1,00,000 goal
+      </p>
+
+      {/* Donation Form */}
+      <form className="donation-form" onSubmit={handleDonate}>
+        <label>Enter Donation Amount (₹):</label>
         <input
           type="number"
-          placeholder="Enter amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           required
         />
-
-        <label>Email:</label>
-        <input
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value.trim())}
-          required
-        />
-
-        {!isAnonymous && (
-          <>
-            <label>Your Name:</label>
-            <input
-              type="text"
-              placeholder="Enter your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required={!isAnonymous}
-            />
-          </>
-        )}
-
-        <div className="checkbox-container">
-          <input
-            type="checkbox"
-            id="anonymous"
-            checked={isAnonymous}
-            onChange={() => setIsAnonymous(!isAnonymous)}
-          />
-          <label htmlFor="anonymous">Donate Anonymously</label>
-        </div>
-
-        <label>Payment Method:</label>
-        <select value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
-          <option value="UPI">UPI</option>
-          <option value="Credit/Debit Card">Credit/Debit Card</option>
-          <option value="Net Banking">Net Banking</option>
-          <option value="Wallet">Wallet</option>
-        </select>
-
-        <label>Message (Optional):</label>
-        <textarea
-          placeholder="Leave a message (optional)"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        ></textarea>
-
-        <button type="submit">💰 Donate Now</button>
+        <button type="submit">Donate Now</button>
       </form>
+
+      {/* Payment Methods */}
+      <div className="payment-section">
+        <h3>We Accept</h3>
+        <img src={paymentImage} alt="Payment Methods" />
+      </div>
+
+      {/* Additional Information */}
+      <div className="donation-info">
+        <h3>Why Donate?</h3>
+        <p>
+          Your donation supports education, healthcare, and community
+          development.
+        </p>
+
+        <h3>Where Does Your Money Go?</h3>
+        <p>
+          80% goes directly to community projects, 15% for operational costs, 5%
+          for outreach.
+        </p>
+
+        <h3>Need Help?</h3>
+        <p>
+          Contact our support team at{" "}
+          <a href="mailto:support@crowdfund.com">support@crowdfund.com</a>
+        </p>
+      </div>
+
+      {/* Social Sharing */}
+      <div className="social-sharing">
+        <h3>Spread the Word</h3>
+        <Link to="/">Share on Facebook</Link> |{" "}
+        <Link to="/">Share on Twitter</Link>
+      </div>
     </div>
   );
 };

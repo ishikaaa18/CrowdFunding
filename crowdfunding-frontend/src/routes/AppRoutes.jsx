@@ -1,4 +1,7 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
 import Home from "../pages/Home";
 import Campaigns from "../pages/Campaigns";
 import CampaignDetails from "../pages/CampaignDetails";
@@ -9,11 +12,9 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
-import StartCampaign from "../pages/StartCampaign";  // ✅ Updated import
+import StartCampaign from "../pages/StartCampaign";
 import ProtectedRoute from "./ProtectedRoute";
 import HowItWorks from "../components/Home/HowItWorks";
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
 import CampaignForm from "../components/Forms/CampaignForm";
 
 const AppRoutes = () => {
@@ -26,39 +27,28 @@ const AppRoutes = () => {
       <Route path="/campaigns" element={<Campaigns />} />
       <Route path="/campaigns/:id" element={<CampaignDetails />} />
       <Route path="/contact-us" element={<ContactUs />} />
-      <Route path="/donate" element={<Donate />} />
+      <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/how-it-works" element={<HowItWorks />} />
+      <Route path="/donate/:campaignId" element={<Donate />} />  
 
-      {/* Protected Routes (Require Login) */}
+      {/* Protected Routes */}
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       <Route path="/campaign-form" element={<ProtectedRoute><CampaignForm /></ProtectedRoute>} />
+      <Route path="/start-campaign" element={user ? <ProtectedRoute><StartCampaign /></ProtectedRoute> : <Navigate to="/register" />} />
+     
 
-      
-      {/* Redirect "Start a Campaign" to Register if Not Logged In */}
-      <Route path="/start-campaign" element={user ? <ProtectedRoute><StartCampaign /></ProtectedRoute> : <Register />} />  {/* ✅ Updated path & component */}
 
-      {/* 404 Page Not Found */}
-      <Route
-        path="*"
-        element={
-          <div style={{ textAlign: "center", margin: "50px" }}>
-            <h1>404 - Page Not Found</h1>
-            <p>The page you are looking for does not exist.</p>
-            <a href="/" style={{ textDecoration: "none", color: "#007BFF", fontWeight: "bold" }}>
-              Go Back to Home
-            </a>
-          </div>
-        }
-      />
+      {/* 404 - Page Not Found */}
+      <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );
 };
 
 export default AppRoutes;
+
 
 
 

@@ -3,10 +3,17 @@ import Campaign from "../models/Campaign.js"; // Ensure you import the model
 const createCampaign = async (req, res) => {
   try {
     console.log("📝 Received Request Body:", req.body); // Debugging log
+    console.log("📸 Uploaded File:", req.file); // Log uploaded file
 
-    const { title, description, goalAmount, deadline, image } = req.body;
+    const { title, description, goalAmount, deadline } = req.body;
 
-    if (!title || !description || !goalAmount || !deadline || !image) {
+    // Ensure an image is uploaded
+    if (!req.file) {
+      return res.status(400).json({ error: "Image is required" });
+    }
+
+    // Ensure all required fields are present
+    if (!title || !description || !goalAmount || !deadline) {
       return res.status(400).json({ error: "All fields are required" });
     }
 
@@ -18,7 +25,7 @@ const createCampaign = async (req, res) => {
       raisedAmount: 0, // Default value
       deadline: new Date(deadline), // Ensure Date format
       creator: req.user._id, // Get user ID from auth middleware
-      image,
+      image: req.file.path, // 🔥 Use uploaded file path
     });
 
     res.status(201).json({ message: "Campaign created successfully", campaign: newCampaign });
@@ -29,3 +36,4 @@ const createCampaign = async (req, res) => {
 };
 
 export default createCampaign;
+

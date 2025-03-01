@@ -1,34 +1,47 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import axios from "axios";
 import "../styles/Dashboard.css";
-import { FaEdit, FaTrashAlt, FaPlusCircle, FaSignOutAlt } from "react-icons/fa"; // Added logout icon
+import { FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
 
 const Dashboard = () => {
-  const { user, login, logout } = useContext(AuthContext); // ✅ Added logout
-  const [isEditing, setIsEditing] = useState(false);
-  const [updatedUser, setUpdatedUser] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    password: "",
-  });
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [campaigns, setCampaigns] = useState([]);
+  const [donations, setDonations] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserCampaigns();
+      fetchUserDonations();
+    }
+  }, [user]);
 
   if (!user) return <Navigate to="/login" replace />;
 
-  // Handle input changes
-  const handleChange = (e) => {
-    setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
+  // Fetch user's campaigns
+  const fetchUserCampaigns = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/campaigns/user", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setCampaigns(response.data);
+    } catch (error) {
+      console.error("Error fetching campaigns:", error);
+    }
   };
 
-  // Save updated user data
-  const handleSave = () => {
-    if (!updatedUser.name.trim() || !updatedUser.email.trim()) {
-      alert("Name and Email cannot be empty!");
-      return;
+  // Fetch user's donations
+  const fetchUserDonations = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/donations/user", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setDonations(response.data);
+    } catch (error) {
+      console.error("Error fetching donations:", error);
     }
-    login({ ...user, ...updatedUser });
-    setIsEditing(false);
-    alert("Profile updated successfully!");
   };
 
   return (
@@ -37,12 +50,9 @@ const Dashboard = () => {
       <div className="dashboard-sidebar">
         <h3 className="sidebar-title">Dashboard</h3>
         <ul className="sidebar-nav">
-          <li><a href="#profile">Profile</a></li>
-          <li><a href="#projects">Your Projects</a></li>
-          <li><a href="#contributions">Your Contributions</a></li>
-          <li><a href="#settings">Settings</a></li>
+          <li><a href="#campaigns">Your Campaigns</a></li>
+          <li><a href="#donations">Your Donations</a></li>
         </ul>
-        {/* ✅ Logout Button */}
         <button className="btn btn-danger logout-btn" onClick={logout}>
           <FaSignOutAlt /> Logout
         </button>
@@ -52,84 +62,42 @@ const Dashboard = () => {
       <div className="dashboard-main">
         <h1 className="dashboard-header">Welcome, {user?.name}!</h1>
 
-        {/* Edit Profile Section */}
-        <div id="profile" className="profile-section">
-          <h3>Profile Overview</h3>
-          <div className="profile-card">
-            <p><strong>Name:</strong> {user?.name}</p>
-            <p><strong>Email:</strong> {user?.email}</p>
-            <button className="btn btn-outline-primary" onClick={() => setIsEditing(true)}>
-              <FaEdit /> Edit Profile
-            </button>
-          </div>
-
-          {isEditing && (
-            <div className="edit-profile-card">
-              <h3>Edit Profile</h3>
-              <input
-                type="text"
-                className="form-control"
-                name="name"
-                value={updatedUser.name}
-                onChange={handleChange}
-                placeholder="Enter new name"
-              />
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                value={updatedUser.email}
-                onChange={handleChange}
-                placeholder="Enter new email"
-              />
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                value={updatedUser.password}
-                onChange={handleChange}
-                placeholder="Enter new password (leave blank to keep unchanged)"
-              />
-              <div className="btn-group">
-                <button className="btn btn-success" onClick={handleSave}>💾 Save Changes</button>
-                <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>❌ Cancel</button>
-              </div>
+        {/* Your Campaigns Section */}
+        <div id="campaigns" className="campaigns-section">
+          <h3>Your Campaigns</h3>
+          {campaigns.length > 0 ? (
+            <div className="campaigns-list">
+              {campaigns.map((campaign) => (
+                <div className="campaign-card" key={campaign._id}>
+                  <h4>{campaign.title}</h4>
+                  <p>{campaign.description}</p>
+                  <p><strong>Goal:</strong> ₹{campaign.goalAmount}</p>
+                  <p><strong>Deadline:</strong> {new Date(campaign.deadline).toDateString()}</p>
+                </div>
+              ))}
             </div>
+          ) : (
+            <p>No campaigns started yet.</p>
           )}
+          <button className="btn btn-primary add-campaign-btn" onClick={() => navigate("/start-campaign")}> <FaPlusCircle /> Start a Campaign </button>
         </div>
 
-        {/* User Projects Section */}
-        <div id="projects" className="projects-section">
-          <h3>Your Projects</h3>
-          <div className="projects-list">
-            {/* Example of a project card */}
-            <div className="project-card">
-              <h4>Project Title</h4>
-              <p>Description of the project...</p>
-              <div className="btn-group">
-                <button className="btn btn-info">View</button>
-                <button className="btn btn-warning">Edit</button>
-                <button className="btn btn-danger"><FaTrashAlt /> Delete</button>
-              </div>
+        {/* Your Donations Section */}
+        <div id="donations" className="donations-section">
+          <h3>Your Donations</h3>
+          {donations.length > 0 ? (
+            <div className="donations-list">
+              {donations.map((donation) => (
+                <div className="donation-card" key={donation._id}>
+                  <h4>{donation.campaignTitle}</h4>
+                  <p><strong>Amount Donated:</strong> ₹{donation.amount}</p>
+                  <p><strong>Date:</strong> {new Date(donation.date).toDateString()}</p>
+                </div>
+              ))}
             </div>
-
-            {/* Add New Project Button */}
-            <button className="btn btn-primary add-project-btn">
-              <FaPlusCircle /> Add New Project
-            </button>
-          </div>
-        </div>
-
-        {/* User Contributions Section */}
-        <div id="contributions" className="contributions-section">
-          <h3>Your Contributions</h3>
-          <div className="contributions-list">
-            {/* Example of a contribution card */}
-            <div className="contribution-card">
-              <h4>Contribution Title</h4>
-              <p>Description of the contribution...</p>
-            </div>
-          </div>
+          ) : (
+            <p>No donations made yet.</p>
+          )}
         </div>
       </div>
     </div>
@@ -137,7 +105,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
-
 
