@@ -5,7 +5,12 @@ import axios from 'axios';
 import Sidebar from '../components/common/Sidebar'; // Sidebar import
 
 const Dashboard = () => {
-  const [userData, setUserData] = useState({ name: '', email: '', createdCampaigns: [], donations: [] });
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    createdCampaigns: [], // Default to an empty array
+    donations: []          // Default to an empty array
+  });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -37,8 +42,8 @@ const Dashboard = () => {
         setUserData({
           name: userDetailsResponse.data.name,
           email: userDetailsResponse.data.email,
-          createdCampaigns: campaignsResponse.data.campaigns,
-          donations: donationsResponse.data.donations,
+          createdCampaigns: campaignsResponse.data.campaigns || [], // Ensure it defaults to an empty array if undefined
+          donations: donationsResponse.data.donations || [],         // Ensure it defaults to an empty array if undefined
         });
 
         setLoading(false); // Data fetched, stop loading
