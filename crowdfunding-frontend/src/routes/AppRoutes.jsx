@@ -30,16 +30,17 @@ const AppRoutes = () => {
       <Route path="/how-it-works" element={<HowItWorks />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/donate/:campaignId" element={<Donate />} />  
+      <Route path="/donate/:campaignId" element={<Donate />} />
 
       {/* Protected Routes */}
-      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+      <Route path="/dashboard" element={<Dashboard />} /> {/* No Header and Footer here */}
       <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
       <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
       <Route path="/campaign-form" element={<ProtectedRoute><CampaignForm /></ProtectedRoute>} />
-      <Route path="/start-campaign" element={user ? <ProtectedRoute><StartCampaign /></ProtectedRoute> : <Navigate to="/register" />} />
-     
-
+      <Route
+        path="/start-campaign"
+        element={user ? <ProtectedRoute><StartCampaign /></ProtectedRoute> : <Navigate to="/register" />}
+      />
 
       {/* 404 - Page Not Found */}
       <Route path="*" element={<Navigate to="/" />} />
@@ -48,6 +49,7 @@ const AppRoutes = () => {
 };
 
 export default AppRoutes;
+
 
 
 

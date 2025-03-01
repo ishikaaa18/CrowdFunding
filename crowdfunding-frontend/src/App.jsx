@@ -11,6 +11,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        {/* Conditionally render Header and Footer */}
         <Header />
         <div className="container my-4">
           <AppRoutes />
@@ -22,3 +23,4 @@ function App() {
 }
 
 export default App;
+

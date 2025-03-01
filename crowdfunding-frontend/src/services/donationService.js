@@ -13,6 +13,10 @@ export const donateToProject = async (donationData) => {
     return response.data;
   } catch (error) {
     console.error("Donation failed:", error.response?.data || error.message);
+    // Log full error object for debugging
+    if (error.response) {
+      console.error("Full error response:", error.response);
+    }
     throw error;
   }
 };
@@ -28,6 +32,10 @@ export const fetchDonationsByProject = async (projectId) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching donations:", error.response?.data || error.message);
+    // Log full error object for debugging
+    if (error.response) {
+      console.error("Full error response:", error.response);
+    }
     throw error;
   }
 };
@@ -43,6 +51,11 @@ export const getDonationDetails = async (donationId) => {
     return response.data;
   } catch (error) {
     console.error("Error fetching donation details:", error.response?.data || error.message);
+    // Log full error object for debugging
+    if (error.response) {
+      console.error("Full error response:", error.response);
+    }
     throw error;
   }
 };
+

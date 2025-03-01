@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom"; // Import useNavigate
 import axios from "axios";
 
 const CampaignDetails = () => {
   const { id } = useParams(); // Get campaign ID from URL params
+  const navigate = useNavigate(); // Initialize useNavigate hook
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,12 +34,17 @@ const CampaignDetails = () => {
   if (error) return <p className="error-text">{error}</p>;
   if (!campaign) return <p className="error-text">Campaign not found.</p>;
 
+  // Handle Donate Now button click
+  const handleDonateNow = () => {
+    navigate(`/donate/${id}`); // Navigate to the donate page with campaign ID
+  };
+
   return (
     <div className="campaign-details">
       <h1 className="campaign-title">{campaign.title || "Untitled Campaign"}</h1>
 
       <img
-        src={campaign.image || "/placeholder.jpg"}
+        src={`http://localhost:5000/${campaign.image || "placeholder.jpg"}`} // Fix image URL
         alt={campaign.title || "Campaign Image"}
         className="campaign-image"
       />
@@ -48,12 +54,14 @@ const CampaignDetails = () => {
       <p><strong>Raised:</strong> ${campaign.raisedAmount?.toLocaleString() || "0"}</p>
       <p><strong>Deadline:</strong> {campaign.deadline ? new Date(campaign.deadline).toLocaleDateString() : "N/A"}</p>
 
-      <button className="donate-button">Donate Now</button>
+      <button className="donate-button" onClick={handleDonateNow}>Donate Now</button>
     </div>
   );
 };
 
 export default CampaignDetails;
+
+
 
 
 

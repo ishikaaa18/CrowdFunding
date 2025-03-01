@@ -1,108 +1,126 @@
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { Navigate, useNavigate } from "react-router-dom";
-import axios from "axios";
-import "../styles/Dashboard.css";
-import { FaPlusCircle, FaSignOutAlt } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Sidebar from '../components/common/Sidebar'; // Sidebar import
 
 const Dashboard = () => {
-  const { user, logout } = useContext(AuthContext);
+  const [userData, setUserData] = useState({ name: '', email: '', createdCampaigns: [], donations: [] });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [campaigns, setCampaigns] = useState([]);
-  const [donations, setDonations] = useState([]);
 
+  // Fetch user details, campaigns, and donations
   useEffect(() => {
-    if (user) {
-      fetchUserCampaigns();
-      fetchUserDonations();
-    }
-  }, [user]);
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          navigate('/login'); // Redirect to login if no token
+          return;
+        }
 
-  if (!user) return <Navigate to="/login" replace />;
+        // Fetching user details
+        const userDetailsResponse = await axios.get('/api/user/details', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  // Fetch user's campaigns
-  const fetchUserCampaigns = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/campaigns/user", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setCampaigns(response.data);
-    } catch (error) {
-      console.error("Error fetching campaigns:", error);
-    }
-  };
+        // Fetching campaigns created by the user
+        const campaignsResponse = await axios.get('/api/user/campaigns', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  // Fetch user's donations
-  const fetchUserDonations = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/donations/user", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
-      setDonations(response.data);
-    } catch (error) {
-      console.error("Error fetching donations:", error);
-    }
-  };
+        // Fetching donations made by the user
+        const donationsResponse = await axios.get('/api/user/donations', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        setUserData({
+          name: userDetailsResponse.data.name,
+          email: userDetailsResponse.data.email,
+          createdCampaigns: campaignsResponse.data.campaigns,
+          donations: donationsResponse.data.donations,
+        });
+
+        setLoading(false); // Data fetched, stop loading
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        setLoading(false); // Stop loading even if there's an error
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  // Show loading spinner until data is fetched
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
+        <Spinner animation="border" variant="primary" />
+      </div>
+    );
+  }
 
   return (
-    <div className="dashboard-container">
-      {/* Sidebar */}
-      <div className="dashboard-sidebar">
-        <h3 className="sidebar-title">Dashboard</h3>
-        <ul className="sidebar-nav">
-          <li><a href="#campaigns">Your Campaigns</a></li>
-          <li><a href="#donations">Your Donations</a></li>
-        </ul>
-        <button className="btn btn-danger logout-btn" onClick={logout}>
-          <FaSignOutAlt /> Logout
-        </button>
-      </div>
-
-      {/* Main Content */}
-      <div className="dashboard-main">
-        <h1 className="dashboard-header">Welcome, {user?.name}!</h1>
-
-        {/* Your Campaigns Section */}
-        <div id="campaigns" className="campaigns-section">
-          <h3>Your Campaigns</h3>
-          {campaigns.length > 0 ? (
-            <div className="campaigns-list">
-              {campaigns.map((campaign) => (
-                <div className="campaign-card" key={campaign._id}>
-                  <h4>{campaign.title}</h4>
-                  <p>{campaign.description}</p>
-                  <p><strong>Goal:</strong> ₹{campaign.goalAmount}</p>
-                  <p><strong>Deadline:</strong> {new Date(campaign.deadline).toDateString()}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No campaigns started yet.</p>
-          )}
-          <button className="btn btn-primary add-campaign-btn" onClick={() => navigate("/start-campaign")}> <FaPlusCircle /> Start a Campaign </button>
-        </div>
-
-        {/* Your Donations Section */}
-        <div id="donations" className="donations-section">
-          <h3>Your Donations</h3>
-          {donations.length > 0 ? (
-            <div className="donations-list">
-              {donations.map((donation) => (
-                <div className="donation-card" key={donation._id}>
-                  <h4>{donation.campaignTitle}</h4>
-                  <p><strong>Amount Donated:</strong> ₹{donation.amount}</p>
-                  <p><strong>Date:</strong> {new Date(donation.date).toDateString()}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p>No donations made yet.</p>
-          )}
-        </div>
-      </div>
+    <div className="d-flex">
+      <Sidebar />
+      <Container className="ms-5 mt-3">
+        <h2>Your Dashboard</h2>
+        <Row>
+          <Col md={6}>
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Created Campaigns</Card.Title>
+                {userData.createdCampaigns.length > 0 ? (
+                  <ul>
+                    {userData.createdCampaigns.map((campaign) => (
+                      <li key={campaign._id}>
+                        <Card.Text>{campaign.title}</Card.Text>
+                        <Card.Text>{campaign.description}</Card.Text>
+                        <Card.Text><strong>Goal:</strong> ₹{campaign.goalAmount}</Card.Text>
+                        <Card.Text><strong>Raised:</strong> ₹{campaign.raisedAmount}</Card.Text>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Card.Text>You haven't created any campaigns yet.</Card.Text>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={6}>
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Title>Your Donations</Card.Title>
+                {userData.donations.length > 0 ? (
+                  <ul>
+                    {userData.donations.map((donation) => (
+                      <li key={donation._id}>
+                        <Card.Text>Donated to {donation.campaignId.title}</Card.Text>
+                        <Card.Text><strong>Amount:</strong> ₹{donation.amount}</Card.Text>
+                        <Card.Text><strong>Message:</strong> {donation.message || 'No message'}</Card.Text>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Card.Text>You haven't made any donations yet.</Card.Text>
+                )}
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+        <Button
+          className="mt-3"
+          variant="danger"
+          onClick={() => {
+            localStorage.removeItem('token');
+            navigate('/login');
+          }}
+        >
+          Logout
+        </Button>
+      </Container>
     </div>
   );
 };
 
 export default Dashboard;
-

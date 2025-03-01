@@ -52,13 +52,13 @@ const Campaigns = () => {
               {/* 🖼 Campaign Image */}
               {campaign.image ? (
                 <img
-                  src={campaign.image}
+                  src={`http://localhost:5000/${campaign.image}`} // Prepend localhost:5000 to the image path
                   alt={campaign.title}
                   className="campaign-image"
                 />
               ) : (
                 <img
-                  src="/default-campaign.jpg"
+                  src="/default-campaign.jpg" // Default image if no image is uploaded
                   alt="Default"
                   className="campaign-image"
                 />
@@ -89,4 +89,5 @@ const Campaigns = () => {
 };
 
 export default Campaigns;
+
 

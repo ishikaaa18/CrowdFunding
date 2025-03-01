@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Carousel } from "react-bootstrap";
-import { getAllCampaigns } from "../../services/campaignService"; 
+import { getAllCampaigns } from "../../services/campaignService";
 import "../../styles/AdvertisementCarousel.css"; // Ensure correct styling is applied
 
 const AdvertisementCarousel = () => {
@@ -12,7 +12,7 @@ const AdvertisementCarousel = () => {
     const getCampaigns = async () => {
       try {
         const data = await getAllCampaigns();
-        setCampaigns(data.slice(0, 3));  // Display only the first 3 campaigns
+        setCampaigns(data.slice(0, 3)); // Display only the first 3 campaigns
         setLoading(false);
       } catch (err) {
         setError("Failed to load advertisements");
@@ -34,7 +34,7 @@ const AdvertisementCarousel = () => {
             <Carousel.Item key={campaign._id}>
               <img
                 className="d-block w-100 carousel-img"
-                src={campaign.image || "/default-campaign.jpg"}
+                src={campaign.image ? `http://localhost:5000/${campaign.image}` : "/default-campaign.jpg"}
                 alt={campaign.title}
               />
               <Carousel.Caption className="carousel-caption">
@@ -50,4 +50,3 @@ const AdvertisementCarousel = () => {
 };
 
 export default AdvertisementCarousel;
-
