@@ -13,8 +13,9 @@ router.get('/dashboard', protect, async (req, res) => {
     // Get campaigns created by the user
     const createdCampaigns = await Campaign.find({ creator: userId });
 
-    // Get donations made by the user
-    const donations = await Donation.find({ donorId: userId }).populate('campaignId', 'title raisedAmount goalAmount');
+    // Get donations made by the user and populate campaign details
+    const donations = await Donation.find({ donorId: userId })
+      .populate('campaignId', 'title raisedAmount goalAmount'); // populate campaignId with required fields
 
     res.status(200).json({
       createdCampaigns,
@@ -27,3 +28,4 @@ router.get('/dashboard', protect, async (req, res) => {
 });
 
 module.exports = router;
+

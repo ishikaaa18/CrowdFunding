@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Sidebar from '../components/common/Sidebar'; // Sidebar import
+import Sidebar from '../components/common/Sidebar'; // Import Sidebar component
 
 const Dashboard = () => {
   const [userData, setUserData] = useState({
     name: '',
     email: '',
-    createdCampaigns: [], // Default to an empty array
-    donations: []          // Default to an empty array
+    createdCampaigns: [], // Initialize empty array
+    donations: [],         // Initialize empty array
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Track loading state
   const navigate = useNavigate();
 
   // Fetch user details, campaigns, and donations
@@ -20,43 +20,44 @@ const Dashboard = () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) {
-          navigate('/login'); // Redirect to login if no token
+          navigate('/login'); // If no token, redirect to login
           return;
         }
 
-        // Fetching user details
+        // Fetch user details from backend
         const userDetailsResponse = await axios.get('/api/user/details', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // Fetching campaigns created by the user
+        // Fetch campaigns created by the user
         const campaignsResponse = await axios.get('/api/user/campaigns', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // Fetching donations made by the user
+        // Fetch donations made by the user
         const donationsResponse = await axios.get('/api/user/donations', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
+        // Set state with fetched data
         setUserData({
           name: userDetailsResponse.data.name,
           email: userDetailsResponse.data.email,
-          createdCampaigns: campaignsResponse.data.campaigns || [], // Ensure it defaults to an empty array if undefined
-          donations: donationsResponse.data.donations || [],         // Ensure it defaults to an empty array if undefined
+          createdCampaigns: campaignsResponse.data.campaigns || [],
+          donations: donationsResponse.data.donations || [],
         });
 
-        setLoading(false); // Data fetched, stop loading
+        setLoading(false); // Data is loaded, stop loading state
       } catch (error) {
-        console.error('Error fetching user data:', error);
-        setLoading(false); // Stop loading even if there's an error
+        console.error('Error fetching data:', error);
+        setLoading(false); // Stop loading on error
       }
     };
 
     fetchData();
   }, [navigate]);
 
-  // Show loading spinner until data is fetched
+  // Show loading spinner while fetching data
   if (loading) {
     return (
       <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
@@ -67,7 +68,7 @@ const Dashboard = () => {
 
   return (
     <div className="d-flex">
-      <Sidebar />
+      <Sidebar /> {/* Include Sidebar */}
       <Container className="ms-5 mt-3">
         <h2>Your Dashboard</h2>
         <Row>
@@ -117,8 +118,8 @@ const Dashboard = () => {
           className="mt-3"
           variant="danger"
           onClick={() => {
-            localStorage.removeItem('token');
-            navigate('/login');
+            localStorage.removeItem('token'); // Remove token from localStorage
+            navigate('/login'); // Redirect to login
           }}
         >
           Logout
