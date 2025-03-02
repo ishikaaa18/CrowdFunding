@@ -25,14 +25,17 @@ export const AuthProvider = ({ children }) => {
       console.error("❌ Invalid user data:", userData);
       return;
     }
-
+  
+    console.log("User Data:", userData); // Add this line to log user data
+  
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData)); // Store the entire user object
     localStorage.setItem("token", userData.token); // Store token separately
-
+  
     console.log("✅ User logged in:", userData);
     navigate("/dashboard"); // Redirect to dashboard
   }, [navigate]);
+  
 
   // ✅ Logout function
   const logout = useCallback(() => {

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
 
 const CampaignForm = () => {
+  const { user } = useContext(AuthContext); // Use context to get the user data
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -22,9 +24,8 @@ const CampaignForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Retrieve user information from localStorage
-    const user = JSON.parse(localStorage.getItem("user")); // Get the entire user object
-    if (!user || !user.id) { // Ensure user and userId exist
+    // Check if the user is logged in (using AuthContext)
+    if (!user || !user.id) {
       alert("User not logged in!");
       return;
     }
@@ -118,4 +119,5 @@ const CampaignForm = () => {
 };
 
 export default CampaignForm;
+
 
