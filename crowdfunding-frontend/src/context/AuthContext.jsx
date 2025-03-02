@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
 
     if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
+      setUser(JSON.parse(storedUser)); // Store the entire user object
     }
   }, []);
 
@@ -27,18 +27,18 @@ export const AuthProvider = ({ children }) => {
     }
 
     setUser(userData);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", userData.token); // ✅ Store token separately
+    localStorage.setItem("user", JSON.stringify(userData)); // Store the entire user object
+    localStorage.setItem("token", userData.token); // Store token separately
 
     console.log("✅ User logged in:", userData);
-    navigate("/dashboard"); // ✅ Redirect to dashboard
+    navigate("/dashboard"); // Redirect to dashboard
   }, [navigate]);
 
   // ✅ Logout function
   const logout = useCallback(() => {
     setUser(null);
-    localStorage.removeItem("user");
-    localStorage.removeItem("token"); // ✅ Clear token
+    localStorage.removeItem("user"); // Remove the user object from localStorage
+    localStorage.removeItem("token"); // Remove the token from localStorage
     console.log("✅ User logged out");
     navigate("/login");
   }, [navigate]);
@@ -49,4 +49,5 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
 

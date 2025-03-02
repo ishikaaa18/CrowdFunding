@@ -1,12 +1,12 @@
 const express = require('express');
-const { protect } = require('../middlewares/authMiddleware');
+const { protect } = require('../middleware/authMiddleware');
 const Campaign = require('../models/Campaign');
 const Donation = require('../models/Donation');
 
 const router = express.Router();
 
 // Get user-specific campaigns and donations
-router.get('/dashboard', protect, async (req, res) => {
+router.get('/', protect, async (req, res) => {
   try {
     const userId = req.user._id;
 
@@ -15,14 +15,14 @@ router.get('/dashboard', protect, async (req, res) => {
 
     // Get donations made by the user and populate campaign details
     const donations = await Donation.find({ donorId: userId })
-      .populate('campaignId', 'title raisedAmount goalAmount'); // populate campaignId with required fields
+      .populate('campaignId', 'title raisedAmount goalAmount');
 
     res.status(200).json({
       createdCampaigns,
       donations,
     });
   } catch (error) {
-    console.error(error);
+    console.error("❌ Error fetching dashboard data:", error);
     res.status(500).json({ message: "Failed to fetch dashboard data" });
   }
 });

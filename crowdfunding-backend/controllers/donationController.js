@@ -5,15 +5,15 @@ const Campaign = require("../models/Campaign");
 const makeDonation = async (req, res) => {
   try {
     const { campaignId, amount, message } = req.body;
-    const donorId = req.user._id; // ✅ Extract donor ID correctly
+    const donorId = req.user._id; // Ensure the user is authenticated
 
-    // Check if campaign exists
+    // ✅ Check if campaign exists
     const campaign = await Campaign.findById(campaignId);
     if (!campaign) {
       return res.status(404).json({ message: "Campaign not found" });
     }
 
-    // Create a new donation
+    // ✅ Create a new donation
     const donation = new Donation({
       campaignId,
       donorId,
@@ -23,28 +23,15 @@ const makeDonation = async (req, res) => {
 
     await donation.save();
 
-    // Update campaign's collected amount
+    // ✅ Update campaign raisedAmount
     campaign.raisedAmount += amount;
     await campaign.save();
 
-    res.status(201).json({ message: "Donation successful", donation });
+    res.status(201).json({ success: true, donation });
   } catch (error) {
     console.error("❌ Error making donation:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error making donation" });
   }
 };
 
-// ✅ Get donations for a specific campaign
-const getCampaignDonations = async (req, res) => {
-  try {
-    const { campaignId } = req.params;
-    const donations = await Donation.find({ campaignId }).populate("donorId", "name email");
-
-    res.status(200).json(donations);
-  } catch (error) {
-    console.error("❌ Error fetching donations:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-module.exports = { makeDonation, getCampaignDonations };
+module.exports = { makeDonation };

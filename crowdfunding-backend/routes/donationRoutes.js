@@ -1,34 +1,49 @@
-const express = require("express");
-const { makeDonation, getCampaignDonations } = require("../controllers/donationController");
-const { protect } = require("../middleware/authMiddleware");
+const express = require('express');
+const { protect } = require('../middleware/authMiddleware');
+const Campaign = require('../models/Campaign');
+const Donation = require('../models/Donation');
+const User = require('../models/User');
 
 const router = express.Router();
 
-/* ✅ Route to make a donation (Requires authentication) */
-router.post("/", protect, async (req, res, next) => {
+// Create a donation
+router.post('/', protect, async (req, res) => {
   try {
-    const { campaignId, amount } = req.body;
+    const { campaignId, amount, message } = req.body;
+    const donorId = req.user._id;
 
-    // Validation: Ensure amount is a positive number
-    if (!amount || amount <= 0) {
-      return res.status(400).json({ message: "Donation amount must be greater than zero." });
+    // Ensure campaign exists
+    const campaign = await Campaign.findById(campaignId);
+    if (!campaign) {
+      return res.status(404).json({ message: "Campaign not found" });
     }
 
-    // Call the donation controller
-    await makeDonation(req, res);
-  } catch (error) {
-    next(error);
-  }
-});
+    // Create donation
+    const donation = await Donation.create({
+      campaignId,
+      donorId,
+      amount,
+      message
+    });
 
-/* ✅ Route to get all donations for a specific campaign */
-router.get("/:campaignId", async (req, res, next) => {
-  try {
-    await getCampaignDonations(req, res);
+    // Update User Model: Push the donation to the user's donations array
+    await User.findByIdAndUpdate(
+      donorId,
+      { $push: { donations: donation._id } },
+      { new: true }
+    );
+
+    // Update Campaign Model: Increase raisedAmount
+    campaign.raisedAmount += amount;
+    await campaign.save();
+
+    res.status(201).json(donation);
   } catch (error) {
-    next(error);
+    console.error("Error processing donation:", error);
+    res.status(500).json({ message: "Failed to process donation" });
   }
 });
 
 module.exports = router;
+
 

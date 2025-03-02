@@ -1,4 +1,5 @@
 const Campaign = require("../models/Campaign");
+const User = require("../models/User");
 
 /* ✅ Get all campaigns */
 exports.getAllCampaigns = async (req, res) => {
@@ -23,7 +24,7 @@ exports.getCampaignById = async (req, res) => {
   }
 };
 
-/* ✅ Create a new campaign */
+/* ✅ Create a new campaign (with user tracking) */
 exports.createCampaign = async (req, res) => {
   try {
     const { title, description, goalAmount, deadline } = req.body;
@@ -32,7 +33,6 @@ exports.createCampaign = async (req, res) => {
       return res.status(400).json({ error: "All fields are required" });
     }
 
-    // Ensure `req.file` exists before accessing `.path`
     const imagePath = req.file ? req.file.path.replace(/\\/g, "/") : null;
 
     const newCampaign = new Campaign({
@@ -46,6 +46,12 @@ exports.createCampaign = async (req, res) => {
     });
 
     await newCampaign.save();
+
+    // ✅ Track campaign in user's profile
+    await User.findByIdAndUpdate(req.user._id, {
+      $push: { createdCampaigns: newCampaign._id },
+    });
+
     res.status(201).json({ message: "Campaign created successfully", campaign: newCampaign });
   } catch (err) {
     console.error("❌ Error creating campaign:", err);
@@ -88,10 +94,15 @@ exports.deleteCampaign = async (req, res) => {
     }
 
     await campaign.deleteOne();
+
+    // ✅ Remove campaign from user's profile
+    await User.findByIdAndUpdate(req.user._id, {
+      $pull: { createdCampaigns: campaign._id },
+    });
+
     res.status(200).json({ message: "Campaign deleted successfully" });
   } catch (err) {
     console.error("❌ Error deleting campaign:", err);
     res.status(500).json({ error: "Server error deleting campaign" });
   }
 };
-

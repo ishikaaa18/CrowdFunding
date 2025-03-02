@@ -7,6 +7,7 @@ const path = require("path");
 const authRoutes = require("./routes/authRoutes.js");
 const donationRoutes = require("./routes/donationRoutes.js");
 const campaignRoutes = require("./routes/campaignRoutes.js");
+const dashboardRoutes = require("./routes/dashboardRoutes");
 
 /* ✅ Load Environment Variables */
 dotenv.config();
@@ -55,6 +56,8 @@ mongoose
 app.use("/api/auth", authRoutes);
 app.use("/api/donations", donationRoutes);
 app.use("/api/campaigns", campaignRoutes);
+app.use("/api/dashboard", dashboardRoutes);
+
 
 /* ✅ Default Route */
 app.get("/", (req, res) => {

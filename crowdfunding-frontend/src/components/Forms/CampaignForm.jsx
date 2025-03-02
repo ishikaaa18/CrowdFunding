@@ -21,36 +21,40 @@ const CampaignForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
+
+    // Retrieve user information from localStorage
+    const user = JSON.parse(localStorage.getItem("user")); // Get the entire user object
+    if (!user || !user.id) { // Ensure user and userId exist
       alert("User not logged in!");
       return;
     }
-  
+
+    // Prepare form data for campaign creation
     const campaignData = new FormData();
     campaignData.append("title", formData.title);
     campaignData.append("description", formData.description);
     campaignData.append("goalAmount", Number(formData.goalAmount)); // Ensure it's a number
     campaignData.append("deadline", formData.deadline);
-    campaignData.append("status", "active");
-    campaignData.append("image", formData.image);
-    campaignData.append("creator", userId);
-  
+    campaignData.append("status", "active"); // Default status as "active"
+    campaignData.append("image", formData.image); // Append the image
+    campaignData.append("creator", user.id); // Use user.id from context
+
     // Debugging: Log FormData values
     for (let [key, value] of campaignData.entries()) {
       console.log(`${key}:`, value);
     }
-  
+
+    // Make API call to create the campaign
     try {
       const response = await axios.post("http://localhost:5000/api/campaigns", campaignData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-  
+
+      // Success: Alert and reset the form
       alert("✅ Campaign Created Successfully!");
       console.log("Response:", response.data);
-  
-      // Reset form
+
+      // Reset form after successful submission
       setFormData({
         title: "",
         description: "",
@@ -59,12 +63,11 @@ const CampaignForm = () => {
         image: null,
       });
     } catch (error) {
+      // Error: Handle failure to create campaign
       console.error("❌ Error creating campaign:", error.response?.data || error.message);
       alert("Failed to create campaign: " + (error.response?.data?.error || "Unknown error"));
     }
   };
-  
-  
 
   return (
     <form className="campaign-form" onSubmit={handleSubmit}>
@@ -115,3 +118,4 @@ const CampaignForm = () => {
 };
 
 export default CampaignForm;
+
