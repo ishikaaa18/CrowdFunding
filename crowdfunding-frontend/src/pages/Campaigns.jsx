@@ -4,6 +4,8 @@ import { getAllCampaigns } from "../services/campaignService";
 import SearchBar from "../components/common/SearchBar";
 import "../styles/Campaigns.css";
 
+const API_BASE_URL = "http://localhost:5000"; // Base API URL
+
 const Campaigns = () => {
   const [campaigns, setCampaigns] = useState([]);
   const [filteredCampaigns, setFilteredCampaigns] = useState([]);
@@ -37,49 +39,49 @@ const Campaigns = () => {
 
   return (
     <div className="campaigns-container">
-      {/* 🟢 Search Bar at the Top */}
+      {/* 🟢 Search Bar */}
       <SearchBar onSearch={handleSearch} />
 
-      {/* 🔴 Display Loading & Error Messages */}
+      {/* 🔴 Loading & Error Messages */}
       {loading && <p className="loading-text">Loading campaigns...</p>}
       {error && <p className="error-text">{error}</p>}
 
       {/* 🟠 Campaigns List */}
       <div className="campaigns-list">
         {filteredCampaigns.length > 0 ? (
-          filteredCampaigns.map((campaign) => (
-            <div key={campaign._id} className="campaign-card">
-              {/* 🖼 Campaign Image */}
-              {campaign.image ? (
+          filteredCampaigns.map((campaign) => {
+            // ✅ Correct Image URL Handling
+            const imageUrl = campaign.image
+              ? `${API_BASE_URL}/${campaign.image}`
+              : "/default-campaign.jpg"; // Fallback image
+
+            return (
+              <div key={campaign._id} className="campaign-card">
+                {/* 🖼 Campaign Image with onError fallback */}
                 <img
-                  src={`http://localhost:5000/${campaign.image}`} // Prepend localhost:5000 to the image path
+                  src={imageUrl}
                   alt={campaign.title}
                   className="campaign-image"
+                  onError={(e) => (e.target.src = "/default-campaign.jpg")}
                 />
-              ) : (
-                <img
-                  src="/default-campaign.jpg" // Default image if no image is uploaded
-                  alt="Default"
-                  className="campaign-image"
-                />
-              )}
 
-              <div className="campaign-card-content">
-                <h3>{campaign.title}</h3>
-                <p>
-                  {campaign.description && campaign.description.length > 100
-                    ? `${campaign.description.substring(0, 100)}...`
-                    : campaign.description || "No description available"}
-                </p>
-                <Link
-                  to={`/campaigns/${campaign._id}`}
-                  className="campaign-link"
-                >
-                  View Details
-                </Link>
+                <div className="campaign-card-content">
+                  <h3>{campaign.title}</h3>
+                  <p>
+                    {campaign.description && campaign.description.length > 100
+                      ? `${campaign.description.substring(0, 100)}...`
+                      : campaign.description || "No description available"}
+                  </p>
+                  <Link
+                    to={`/campaigns/${campaign._id}`}
+                    className="campaign-link"
+                  >
+                    View Details
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p className="no-results">No campaigns found.</p>
         )}
@@ -89,5 +91,6 @@ const Campaigns = () => {
 };
 
 export default Campaigns;
+
 
 

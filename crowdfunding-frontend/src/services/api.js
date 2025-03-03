@@ -10,37 +10,52 @@ const api = axios.create({
   },
 });
 
-// Attach Authorization token if available
+// ✅ Attach Authorization token automatically if available
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+
+      // Only log in development mode (prevents unnecessary logs in production)
+      if (process.env.NODE_ENV === "development") {
+        console.log("🔹 Attached token:", token);
+      }
+    } else {
+      console.warn("⚠ No token found in localStorage!");
     }
+
     return config;
   },
-  (error) => {
-    // Handle request errors (e.g., network issues)
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Optionally: Add response interceptor for handling errors like 401 (unauthorized) or 500 (server errors)
+// ✅ Response interceptor for handling API errors globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
-      // Handle token expiration or unauthorized access
-      console.log("Token expired or unauthorized. Please login again.");
-      // Redirect to login page or handle logout
-    } else if (error.response && error.response.status === 500) {
-      // Handle server error
-      console.error("Server error. Please try again later.");
+    if (error.response) {
+      const { status } = error.response;
+
+      if (status === 401) {
+        console.warn("⚠ Unauthorized access! Redirecting to login...");
+
+        // Optional: Auto logout if the token is expired
+        localStorage.removeItem("token");
+        window.location.href = "/login"; // Redirect to login page
+      } else if (status === 500) {
+        console.error("❌ Server error! Please try again later.");
+      }
+    } else {
+      console.error("❌ Network error! Check your connection.");
     }
+
     return Promise.reject(error);
   }
 );
 
 export default api;
+
 
 

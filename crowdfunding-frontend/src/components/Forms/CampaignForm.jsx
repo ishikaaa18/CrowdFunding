@@ -1,9 +1,10 @@
 import React, { useState, useContext } from "react";
-import axios from "axios";
-import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
+import { AuthContext } from "../../context/AuthContext";
+import { createCampaign } from "../../services/campaignService";
 
 const CampaignForm = () => {
-  const { user } = useContext(AuthContext); // Use context to get the user data
+  const { user } = useContext(AuthContext);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -24,47 +25,54 @@ const CampaignForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if the user is logged in (using AuthContext)
-    if (!user || !user.id) {
-      alert("User not logged in!");
+    if (!user) {
+      alert("❌ User not logged in!");
       return;
     }
 
-    // Prepare form data for campaign creation
-    const campaignData = new FormData();
-    campaignData.append("title", formData.title);
-    campaignData.append("description", formData.description);
-    campaignData.append("goalAmount", Number(formData.goalAmount)); // Ensure it's a number
-    campaignData.append("deadline", formData.deadline);
-    campaignData.append("status", "active"); // Default status as "active"
-    campaignData.append("image", formData.image); // Append the image
-    campaignData.append("creator", user.id); // Use user.id from context
+    const { title, description, goalAmount, deadline, image } = formData;
 
-    // Debugging: Log FormData values
-    for (let [key, value] of campaignData.entries()) {
-      console.log(`${key}:`, value);
+    console.log("📝 Form Data Before Submission:", formData);
+
+    if (!title.trim() || !description.trim()) {
+      alert("❌ Title and Description are required!");
+      return;
     }
 
-    // Make API call to create the campaign
+    if (!goalAmount || isNaN(Number(goalAmount)) || Number(goalAmount) <= 0) {
+      alert("❌ Goal Amount must be a valid positive number!");
+      return;
+    }
+
+    const parsedDeadline = new Date(deadline);
+    if (!deadline || isNaN(parsedDeadline.getTime())) {
+      alert("❌ Please select a valid deadline!");
+      return;
+    }
+
     try {
-      const response = await axios.post("http://localhost:5000/api/campaigns", campaignData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const campaignData = new FormData();
+      campaignData.append("title", title);
+      campaignData.append("description", description);
+      campaignData.append("goalAmount", goalAmount.toString());
+      campaignData.append("deadline", parsedDeadline.toISOString());
 
-      // Success: Alert and reset the form
+      if (image) {
+        campaignData.append("image", image);
+      }
+
+      console.log("📤 Sending Campaign Data:");
+      for (let pair of campaignData.entries()) {
+        console.log(pair[0] + ": " + pair[1]); // Shows values being sent
+      }
+
+      await createCampaign(campaignData);
       alert("✅ Campaign Created Successfully!");
-      console.log("Response:", response.data);
 
-      // Reset form after successful submission
-      setFormData({
-        title: "",
-        description: "",
-        goalAmount: "",
-        deadline: "",
-        image: null,
-      });
+      setFormData({ title: "", description: "", goalAmount: "", deadline: "", image: null });
+
+      document.querySelector("input[type='file']").value = ""; // Reset file input manually
     } catch (error) {
-      // Error: Handle failure to create campaign
       console.error("❌ Error creating campaign:", error.response?.data || error.message);
       alert("Failed to create campaign: " + (error.response?.data?.error || "Unknown error"));
     }
@@ -73,45 +81,19 @@ const CampaignForm = () => {
   return (
     <form className="campaign-form" onSubmit={handleSubmit}>
       <label>Campaign Title:</label>
-      <input
-        type="text"
-        name="title"
-        value={formData.title}
-        onChange={handleChange}
-        placeholder="Enter campaign title"
-        required
-      />
+      <input type="text" name="title" value={formData.title} onChange={handleChange} required />
 
       <label>Description:</label>
-      <textarea
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        placeholder="Describe your campaign..."
-        required
-      />
+      <textarea name="description" value={formData.description} onChange={handleChange} required />
 
       <label>Goal Amount (₹):</label>
-      <input
-        type="number"
-        name="goalAmount"
-        value={formData.goalAmount}
-        onChange={handleChange}
-        placeholder="Enter goal amount"
-        required
-      />
+      <input type="number" name="goalAmount" value={formData.goalAmount} onChange={handleChange} required min="1" />
 
       <label>Deadline:</label>
-      <input
-        type="date"
-        name="deadline"
-        value={formData.deadline}
-        onChange={handleChange}
-        required
-      />
+      <input type="date" name="deadline" value={formData.deadline} onChange={handleChange} required />
 
       <label>Upload Image:</label>
-      <input type="file" accept="image/*" onChange={handleFileChange} required />
+      <input type="file" accept="image/*" onChange={handleFileChange} />
 
       <button type="submit">Start Campaign</button>
     </form>
@@ -119,5 +101,3 @@ const CampaignForm = () => {
 };
 
 export default CampaignForm;
-
-

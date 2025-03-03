@@ -17,6 +17,9 @@ const Dashboard = () => {
   const [userData, setUserData] = useState({
     name: "",
     email: "",
+    phone: "",
+    bio: "",
+    profileImage: "",
     createdCampaigns: [],
     donations: [],
   });
@@ -33,16 +36,16 @@ const Dashboard = () => {
           return;
         }
 
-        const response = await axios.get(
-          "http://localhost:5000/api/dashboard",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await axios.get("http://localhost:5000/api/dashboard", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         setUserData({
-          name: response.data.name || "",
-          email: response.data.email || "",
+          name: response.data.name || "N/A",
+          email: response.data.email || "N/A",
+          phone: response.data.phone || "Not Provided",
+          bio: response.data.bio || "No bio available.",
+          profileImage: response.data.profileImage || "",
           createdCampaigns: response.data.createdCampaigns || [],
           donations: response.data.donations || [],
         });
@@ -78,27 +81,32 @@ const Dashboard = () => {
 
         {error && <Alert variant="danger">{error}</Alert>}
 
-        {/* General Information Section */}
+        {/* General Information + Profile Section */}
         <Row>
           <Col md={6}>
             <Card className="mb-3">
               <Card.Body>
                 <Card.Title>General Information</Card.Title>
-                <Card.Text>
-                  <strong>Name:</strong> {userData.name}
-                </Card.Text>
-                <Card.Text>
-                  <strong>Email:</strong> {userData.email}
-                </Card.Text>
-                <Button variant="primary" onClick={() => navigate("/profile")}>
-                  View Profile
-                </Button>
-                <Button
-                  variant="secondary"
-                  className="ml-2"
-                  onClick={() => navigate("/settings")}
-                >
-                  Settings
+                <Card.Text><strong>Name:</strong> {userData.name}</Card.Text>
+                <Card.Text><strong>Email:</strong> {userData.email}</Card.Text>
+                <Card.Text><strong>Phone:</strong> {userData.phone}</Card.Text>
+                <Card.Text><strong>Bio:</strong> {userData.bio}</Card.Text>
+
+                {/* Display Profile Image */}
+                {userData.profileImage && (
+                  <div>
+                    <img
+                      src={`http://localhost:5000${userData.profileImage}`} // Prepend base URL to the profile image path
+                      alt="Profile"
+                      className="profile-image"
+                      style={{ width: "150px", height: "150px", borderRadius: "50%" }}
+                    />
+                  </div>
+                )}
+
+                {/* Edit Profile Button */}
+                <Button variant="secondary" className="mr-2" onClick={() => navigate("/settings")}>
+                  Edit Profile
                 </Button>
               </Card.Body>
             </Card>
@@ -127,10 +135,7 @@ const Dashboard = () => {
                         <Card.Text>
                           <strong>Raised:</strong> ₹{campaign.raisedAmount}
                         </Card.Text>
-                        <Button
-                          variant="primary"
-                          onClick={() => navigate(`/campaigns/${campaign._id}`)}
-                        >
+                        <Button variant="primary" onClick={() => navigate(`/campaigns/${campaign._id}`)}>
                           View Campaign
                         </Button>
                       </li>
@@ -154,22 +159,17 @@ const Dashboard = () => {
                       <li key={donation._id}>
                         <Card.Text>
                           Donated to{" "}
-                          <strong>
-                            {donation.campaignId?.title || "Unknown Campaign"}
-                          </strong>
+                          <strong>{donation.campaignId?.title || "Unknown Campaign"}</strong>
                         </Card.Text>
                         <Card.Text>
                           <strong>Amount:</strong> ₹{donation.amount}
                         </Card.Text>
                         <Card.Text>
-                          <strong>Message:</strong>{" "}
-                          {donation.message || "No message"}
+                          <strong>Message:</strong> {donation.message || "No message"}
                         </Card.Text>
                         <Button
                           variant="primary"
-                          onClick={() =>
-                            navigate(`/campaigns/${donation.campaignId?._id}`)
-                          }
+                          onClick={() => navigate(`/campaigns/${donation.campaignId?._id}`)}
                         >
                           View Donation Campaign
                         </Button>
@@ -184,19 +184,13 @@ const Dashboard = () => {
           </Col>
         </Row>
 
-        {/* Buttons for creating campaigns or donating */}
-        <Row>
+        {/* Action Buttons for Campaign & Donations */}
+        <Row className="mt-3">
           <Col md={12}>
-            {/* Button to view all campaigns for donation */}
             <Button variant="info" onClick={() => navigate("/campaigns")}>
               Donate to a Campaign
             </Button>
-            {/* Button to navigate to the create campaign page */}
-            <Button
-              variant="success"
-              className="ml-2"
-              onClick={() => navigate("/campaign-form")}
-            >
+            <Button variant="success" className="ml-2" onClick={() => navigate("/campaign-form")}>
               Create Campaign
             </Button>
           </Col>
@@ -212,3 +206,5 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+

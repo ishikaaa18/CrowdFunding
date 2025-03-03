@@ -1,13 +1,15 @@
 const express = require("express");
-const { registerUser, loginUser, getUserProfile, getUserDashboard } = require("../controllers/authController.js");
-const { protect } = require("../middleware/authMiddleware.js");
+const upload = require("../middleware/uploadMiddleware");
+const { registerUser, loginUser, getUserProfile } = require("../controllers/authController");
+const { protect } = require("../middleware/authMiddleware");
+
 
 const router = express.Router();
 
-router.post("/register", registerUser);
+router.post("/register", upload.single("profileImage"), registerUser);
 router.post("/login", loginUser);
 router.get("/profile", protect, getUserProfile);
-router.get("/dashboard", protect, getUserDashboard); // ✅ Added dashboard route
 
 module.exports = router;
+
 

@@ -7,20 +7,20 @@ const Sidebar = () => {
   return (
     <Box className="sidebar">
       <List>
-        <ListItem button component={Link} to="/dashboard">
+        <ListItem component={Link} to="/dashboard">
           <ListItemText primary="Dashboard" />
         </ListItem>
         <Divider className="sidebar-divider" />
-        <ListItem button component={Link} to="/profile">
+        <ListItem component={Link} to="/profile">
           <ListItemText primary="Profile" />
         </ListItem>
-        <ListItem button component={Link} to="/settings">
+        <ListItem component={Link} to="/settings">
           <ListItemText primary="Settings" />
         </ListItem>
-        <ListItem button component={Link} to="/donations">
+        <ListItem component={Link} to="/donations">
           <ListItemText primary="Donations" />
         </ListItem>
-        <ListItem button component={Link} to="/campaigns">
+        <ListItem component={Link} to="/campaigns">
           <ListItemText primary="Campaigns" />
         </ListItem>
       </List>

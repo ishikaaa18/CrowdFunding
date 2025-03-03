@@ -38,7 +38,7 @@ app.use(
 app.use(express.json());
 
 /* ✅ Static File Serving */
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads", express.static(path.resolve(__dirname, "uploads")));
 
 /* ✅ MongoDB Connection */
 mongoose

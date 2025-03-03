@@ -1,25 +1,39 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import authService from "../../services/authService";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
-  const { login } = useContext(AuthContext);  // ✅ Use login function instead of setUser
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
+    bio: "",
     password: "",
     confirmPassword: "",
+    profileImage: null,
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, profileImage: e.target.files[0] });
+  };
+
   const validateForm = () => {
     if (formData.password !== formData.confirmPassword) {
       setError("Passwords do not match");
+      return false;
+    }
+    if (!/^\d{10}$/.test(formData.phone)) {
+      setError("Invalid phone number. It should be 10 digits.");
       return false;
     }
     setError("");
@@ -30,24 +44,40 @@ const RegisterForm = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
+    setLoading(true);
     try {
-      const userData = await authService.register({
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
-      });
+      // Prepare form data for submission
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("bio", formData.bio);
+      formDataToSend.append("password", formData.password);
+      if (formData.profileImage) {
+        formDataToSend.append("profileImage", formData.profileImage);
+      }
 
-      login(userData);  // ✅ Automatically log in and redirect user
+      // Call the backend service to register the user
+      const userData = await authService.register(formDataToSend);
+      
+      // Once user is registered, log them in (store user data and token in context)
+      login(userData);
+
+      // Redirect to dashboard or home after successful registration
+      navigate("/dashboard");
 
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <form onSubmit={handleRegister} className="p-4 border rounded">
-      <h3>Register</h3>
+      <h3 className="text-center">Create an Account</h3>
       {error && <p className="text-danger">{error}</p>}
+      
       <input
         type="text"
         name="name"
@@ -57,6 +87,7 @@ const RegisterForm = () => {
         onChange={handleChange}
         required
       />
+      
       <input
         type="email"
         name="email"
@@ -66,6 +97,25 @@ const RegisterForm = () => {
         onChange={handleChange}
         required
       />
+
+      <input
+        type="text"
+        name="phone"
+        className="form-control my-2"
+        placeholder="Phone Number"
+        value={formData.phone}
+        onChange={handleChange}
+        required
+      />
+
+      <textarea
+        name="bio"
+        className="form-control my-2"
+        placeholder="Short Bio (optional)"
+        value={formData.bio}
+        onChange={handleChange}
+      ></textarea>
+
       <input
         type="password"
         name="password"
@@ -75,6 +125,7 @@ const RegisterForm = () => {
         onChange={handleChange}
         required
       />
+
       <input
         type="password"
         name="confirmPassword"
@@ -84,7 +135,18 @@ const RegisterForm = () => {
         onChange={handleChange}
         required
       />
-      <button type="submit" className="btn btn-success w-100">Register</button>
+
+      <label>Profile Picture (Optional):</label>
+      <input
+        type="file"
+        accept="image/*"
+        className="form-control my-2"
+        onChange={handleFileChange}
+      />
+
+      <button type="submit" className="btn btn-success w-100" disabled={loading}>
+        {loading ? "Registering..." : "Register"}
+      </button>
     </form>
   );
 };
