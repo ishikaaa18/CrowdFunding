@@ -1,0 +1,87 @@
+/* Reset margin & padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Navbar Container */
+  .navbar {
+    width: 100%;
+    background-color: #2563eb; /* Blue background */
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000; /* Keep it above everything */
+  }
+  
+  /* Logo Styling */
+  .logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+  }
+  
+  /* Navigation Links */
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .nav-links li {
+    display: inline;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #f3f4f6; /* Light gray hover effect */
+  }
+  
+  /* Auth Buttons */
+  .auth-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .login-btn, .register-btn {
+    padding: 8px 16px;
+    border-radius: 5px;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+  
+  .login-btn {
+    background-color: white;
+    color: #2563eb;
+    border: 1px solid #fff;
+  }
+  
+  .register-btn {
+    background-color: #1e40af;
+    color: white;
+  }
+  
+  .login-btn:hover {
+    background-color: #f3f4f6;
+    color: #1e40af;
+  }
+  
+  .register-btn:hover {
+    background-color: #1e3a8a;
+  }
+  

@@ -1,0 +1,60 @@
+/* Full-Width About Page */
+.about-container {
+    width: 100vw;
+    min-height: 100vh;
+    background: linear-gradient(to right, #141e30, #243b55);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+    text-align: center;
+  }
+  
+  /* Headings with Icons */
+  .about-container h2, .about-container h3 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #007bff; /* Blue Accent */
+  }
+  
+  .about-container h2 .icon, .about-container h3 .icon {
+    font-size: 1.8rem;
+    color: #00ff99; /* Light green icon */
+  }
+  
+  /* Paragraphs */
+  .about-container p {
+    font-size: 1.2rem;
+    max-width: 800px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+  }
+  
+  /* List Styling */
+  .about-container ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1.2rem;
+    margin: 20px 0;
+  }
+  
+  .about-container li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    font-weight: bold;
+    color: #00ff99; /* Light green text */
+  }
+  
+  /* List Icons */
+  .list-icon {
+    font-size: 1.5rem;
+    color: #007bff; /* Blue icon */
+  }
+  
