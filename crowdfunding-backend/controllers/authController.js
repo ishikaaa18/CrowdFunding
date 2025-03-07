@@ -15,17 +15,26 @@ const generateToken = (id) => {
 const registerUser = async (req, res) => {
   try {
     const { name, email, phone, bio, password } = req.body;
+    console.log("📌 Registering User:", req.body); // Debug Log
 
-    // Check if user already exists
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    // Check if user exists
     const userExists = await User.findOne({ $or: [{ email }, { phone }] });
-    if (userExists) return res.status(400).json({ message: "User already exists" });
+    if (userExists) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
-    // Handle profile image upload
+    // Handle Profile Image Upload
     const profileImage = req.file ? `/uploads/profileImages/${req.file.filename}` : "";
 
-    // Create & save user
+    // Create and Save User (Password is automatically hashed in the model)
     const user = new User({ name, email, phone, bio, profileImage, password });
     await user.save();
+
+    console.log("✅ User Registered:", user);
 
     res.status(201).json({
       _id: user._id,
@@ -33,15 +42,17 @@ const registerUser = async (req, res) => {
       email: user.email,
       phone: user.phone,
       bio: user.bio,
-      profiePicture: user.profileImage,
+      profileImage: user.profileImage, 
       role: user.role,
       token: generateToken(user._id),
     });
+    
   } catch (error) {
     console.error("❌ Error registering user:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error during registration", error: error.message });
   }
 };
+
 
 // Login User
 const loginUser = async (req, res) => {
@@ -49,7 +60,13 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
 
-    if (!user || !(await user.matchPassword(password))) {
+    if (!user) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    // Validate password
+    const isPasswordMatch = await user.matchPassword(password);
+    if (!isPasswordMatch) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
@@ -65,7 +82,7 @@ const loginUser = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error logging in:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error during login" });
   }
 };
 
@@ -91,7 +108,7 @@ const getUserProfile = async (req, res) => {
     });
   } catch (error) {
     console.error("❌ Error fetching user profile:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error fetching profile" });
   }
 };
 

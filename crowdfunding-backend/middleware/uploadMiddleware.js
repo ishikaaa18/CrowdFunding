@@ -13,19 +13,24 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let uploadPath = "uploads/"; // Default upload path
 
-    if (req.path.includes("profile")) {
+    if (req.originalUrl.includes("/auth/register")) {  
       uploadPath = "uploads/profileImages/"; // Profile images directory
-    } else if (req.path.includes("campaign")) {
+    } else if (req.originalUrl.includes("/campaign")) {
       uploadPath = "uploads/campaignImages/"; // Campaign images directory
     }
 
     ensureDirectoryExists(uploadPath);
+    console.log("📂 Uploading to:", path.resolve(uploadPath)); // ✅ Debug log
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    cb(null, `${Date.now()}-${file.originalname}`);
+    const filename = `${Date.now()}-${file.originalname}`;
+    console.log("📁 Saving file:", filename); // ✅ Debug log
+    cb(null, filename);
   },
 });
+
+
 
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {

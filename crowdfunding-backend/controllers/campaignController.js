@@ -24,10 +24,21 @@ exports.getCampaignById = async (req, res) => {
   }
 };
 
-/* ✅ Create a new campaign (with user tracking) */
+/* ✅ Get featured campaigns */
+exports.getFeaturedCampaigns = async (req, res) => {
+  try {
+    const featuredCampaigns = await Campaign.find({ isFeatured: true }).limit(4);
+    res.status(200).json(featuredCampaigns);
+  } catch (err) {
+    console.error("❌ Error fetching featured campaigns:", err);
+    res.status(500).json({ error: "Server error fetching featured campaigns" });
+  }
+};
+
+/* ✅ Create a new campaign (with image upload) */
 exports.createCampaign = async (req, res) => {
   try {
-    const { title, description, goalAmount, deadline } = req.body;
+    const { title, description, goalAmount, deadline, isFeatured } = req.body;
 
     if (!title || !description || !goalAmount || !deadline) {
       return res.status(400).json({ error: "All fields are required" });
@@ -43,11 +54,12 @@ exports.createCampaign = async (req, res) => {
       deadline: new Date(deadline),
       creator: req.user._id,
       image: imagePath,
+      isFeatured: isFeatured || false, // Allow setting featured campaigns
     });
 
     await newCampaign.save();
 
-    // ✅ Track campaign in user's profile
+    // ✅ Add campaign to user's profile
     await User.findByIdAndUpdate(req.user._id, {
       $push: { createdCampaigns: newCampaign._id },
     });
@@ -65,12 +77,12 @@ exports.updateCampaign = async (req, res) => {
     const campaign = await Campaign.findById(req.params.id);
     if (!campaign) return res.status(404).json({ error: "Campaign not found" });
 
-    // Ensure only the creator can update
+    // ✅ Ensure only the creator can update
     if (String(campaign.creator) !== String(req.user._id)) {
       return res.status(403).json({ error: "Unauthorized to update this campaign" });
     }
 
-    // Update campaign details
+    // ✅ Update campaign details
     const updatedData = req.body;
     if (req.file) updatedData.image = req.file.path.replace(/\\/g, "/");
 
@@ -88,7 +100,7 @@ exports.deleteCampaign = async (req, res) => {
     const campaign = await Campaign.findById(req.params.id);
     if (!campaign) return res.status(404).json({ error: "Campaign not found" });
 
-    // Ensure only the creator can delete
+    // ✅ Ensure only the creator can delete
     if (String(campaign.creator) !== String(req.user._id)) {
       return res.status(403).json({ error: "Unauthorized to delete this campaign" });
     }

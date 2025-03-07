@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "../assets/styles/Home.css";
-
+import FeaturedCampaigns from "../components/FeaturedCampaigns"; // Import FeaturedCampaigns
 
 const Home = () => {
   return (
@@ -13,24 +13,8 @@ const Home = () => {
         </Link>
       </header>
 
-      <section className="featured-campaigns">
-        <h2>Featured Campaigns</h2>
-        <div className="campaign-list">
-          <div className="campaign-card">
-            <h3>Help Build a School</h3>
-            <p>Join us in providing education for underprivileged children.</p>
-          </div>
-          <div className="campaign-card">
-            <h3>Medical Aid for Families</h3>
-            <p>Support families in need of urgent medical assistance.</p>
-          </div>
-          <div className="campaign-card">
-            <h3>Green Energy Initiative</h3>
-            <p>Fund sustainable energy solutions for a cleaner future.</p>
-          </div>
-        
-        </div>
-      </section>
+      {/* Include FeaturedCampaigns component instead of hardcoded campaigns */}
+      <FeaturedCampaigns />
     </div>
   );
 };

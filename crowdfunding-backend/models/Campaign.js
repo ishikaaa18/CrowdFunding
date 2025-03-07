@@ -9,6 +9,7 @@ const campaignSchema = new mongoose.Schema(
     deadline: { type: Date, required: true },
     image: { type: String },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    isFeatured: { type: Boolean, default: false }, // <-- New field to mark featured campaigns
   },
   { timestamps: true }
 );

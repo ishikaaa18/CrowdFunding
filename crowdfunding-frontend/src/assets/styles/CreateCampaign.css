@@ -1,0 +1,129 @@
+/* Full-screen Create Campaign Page */
+.create-campaign-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to right, #141e30, #243b55);
+  }
+  
+  /* Create Campaign Box */
+  .create-campaign-box {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    text-align: center;
+  }
+  
+  /* Heading */
+  .create-campaign-box h2 {
+    margin-bottom: 30px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Input Group Container */
+  .input-group-container {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    background: #f9f9f9;
+  }
+  
+  /* Label */
+  .input-group-container label {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  /* Input Fields */
+  .input-group-container input,
+  .input-group-container textarea,
+  .input-group-container select {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background: #ffffff;
+    margin-top: 8px;
+    margin-bottom: 10px;
+    outline: none;
+  }
+  
+  /* Input Focus Effect */
+  .input-group-container input:focus,
+  .input-group-container textarea:focus,
+  .input-group-container select:focus {
+    border-color: #007bff;
+  }
+  
+  /* File Input Box */
+  .input-group-container .file-upload {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    background: #f1f1f1;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Create Campaign Button */
+  .create-campaign-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .create-campaign-btn:hover {
+    background: #218838;
+  }
+  
+  /* Cancel Button */
+  .cancel-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease;
+  }
+  
+  .cancel-btn:hover {
+    background: #c82333;
+  }
+  
+  /* Links */
+  .create-campaign-link {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+  
+  .create-campaign-link a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .create-campaign-link a:hover {
+    text-decoration: underline;
+  }
+  

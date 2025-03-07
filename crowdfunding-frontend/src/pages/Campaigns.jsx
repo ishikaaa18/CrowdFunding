@@ -1,42 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { fetchCampaigns } from "../api/api";
+import { useNavigate } from "react-router-dom";
 import "../assets/styles/Campaigns.css";
 
-const campaignsData = [
-  {
-    id: 1,
-    title: "Save the Rainforest",
-    description: "Help us protect the rainforest by funding reforestation efforts.",
-    goal: "$50,000",
-    raised: "$30,000",
-  },
-  {
-    id: 2,
-    title: "Education for All",
-    description: "Providing education to underprivileged children around the world.",
-    goal: "$100,000",
-    raised: "$75,000",
-  },
-  {
-    id: 3,
-    title: "Clean Water Initiative",
-    description: "Bringing clean water to communities in need.",
-    goal: "$80,000",
-    raised: "$40,000",
-  },
-];
-
 const Campaigns = () => {
+  const [campaigns, setCampaigns] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const getCampaigns = async () => {
+      const data = await fetchCampaigns();
+      setCampaigns(data);
+    };
+    getCampaigns();
+  }, []);
+
+  const handleDonateClick = (campaignId) => {
+    navigate(`/donate/${campaignId}`); // Redirect to donate page for specific campaign
+  };
+
   return (
     <div className="campaigns-container">
       <h2>Explore Campaigns</h2>
       <div className="campaigns-list">
-        {campaignsData.map((campaign) => (
-          <div key={campaign.id} className="campaign-card">
+        {campaigns.map((campaign) => (
+          <div key={campaign._id} className="campaign-card">
+            {campaign.image && <img src={`http://localhost:5000/${campaign.image}`} alt={campaign.title} />}
             <h3>{campaign.title}</h3>
             <p>{campaign.description}</p>
-            <p><strong>Goal:</strong> {campaign.goal}</p>
-            <p><strong>Raised:</strong> {campaign.raised}</p>
-            <button className="donate-btn">Donate</button>
+            <p><strong>Goal:</strong> ₹{campaign.goalAmount}</p>
+            <p><strong>Raised:</strong> ₹{campaign.raisedAmount}</p>
+            <button className="donate-btn" onClick={() => handleDonateClick(campaign._id)}>
+              Donate
+            </button>
           </div>
         ))}
       </div>
