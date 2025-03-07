@@ -9,7 +9,7 @@ const router = express.Router();
 // Create a donation
 router.post('/', protect, async (req, res) => {
   try {
-    const { campaignId, amount, message } = req.body;
+    const { campaignId, amount, message, paymentReference } = req.body; // Add paymentReference here
     const donorId = req.user._id;
 
     // Ensure campaign exists
@@ -18,12 +18,14 @@ router.post('/', protect, async (req, res) => {
       return res.status(404).json({ message: "Campaign not found" });
     }
 
-    // Create donation
+    // Create donation record
     const donation = await Donation.create({
       campaignId,
       donorId,
       amount,
-      message
+      message,
+      paymentReference,  // Store the payment reference or transaction ID
+      paymentStatus: 'Pending'  // Add payment status
     });
 
     // Update User Model: Push the donation to the user's donations array
@@ -44,6 +46,35 @@ router.post('/', protect, async (req, res) => {
   }
 });
 
+// Payment verification endpoint (to be called after payment confirmation from the frontend)
+router.post('/verify', protect, async (req, res) => {
+  const { paymentReference, donationId, paymentStatus } = req.body;
+
+  try {
+    // Find the donation by ID
+    const donation = await Donation.findById(donationId);
+    if (!donation) {
+      return res.status(404).json({ message: 'Donation not found' });
+    }
+
+    // Update donation status after payment verification
+    donation.paymentStatus = paymentStatus;  // Update payment status
+    donation.paymentReference = paymentReference;  // Store payment reference
+
+    await donation.save();
+
+    // Optionally update the campaign's raisedAmount again if needed
+    const campaign = await Campaign.findById(donation.campaignId);
+    if (campaign) {
+      campaign.raisedAmount += donation.amount; // Ensure campaign raisedAmount is accurate
+      await campaign.save();
+    }
+
+    res.status(200).json({ message: 'Payment verified successfully' });
+  } catch (error) {
+    console.error("Error verifying payment:", error);
+    res.status(500).json({ message: "Failed to verify payment" });
+  }
+});
+
 module.exports = router;
-
-

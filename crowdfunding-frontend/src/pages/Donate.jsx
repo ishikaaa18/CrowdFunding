@@ -8,6 +8,7 @@ const Donate = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [paymentLoading, setPaymentLoading] = useState(false);
 
   const { campaignId } = useParams(); // Get campaignId from URL params
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Donate = () => {
       : "";
 
     try {
+      // Step 1: Create a donation in the backend (without the payment)
       const response = await axios.post(
         "http://localhost:5000/api/donations", // Back-end endpoint
         { campaignId, amount, message },
@@ -39,10 +41,12 @@ const Donate = () => {
         }
       );
 
-      // Success: Redirect to dashboard after donation
+      // Step 2: Check if the donation creation was successful
       if (response.status === 201) {
-        alert("Donation successful!");
-        navigate("/dashboard");
+        const donation = response.data;
+
+        // Step 3: Integrate with the payment gateway (Here using Razorpay for example)
+        openPaymentGateway(donation);
       }
     } catch (error) {
       console.error("Donation failed:", error);
@@ -52,8 +56,59 @@ const Donate = () => {
     }
   };
 
+  const openPaymentGateway = (donation) => {
+    // Example using Razorpay (you can change this to PhonePe or other payment gateway)
+    const options = {
+      key: "YOUR_RAZORPAY_KEY", // Replace with your Razorpay Key
+      amount: amount * 100, // Convert amount to paise (for Razorpay)
+      currency: "INR",
+      name: "Crowdfunding Platform",
+      description: "Donation for Campaign",
+      image: "/logo.png", // Optional logo
+      order_id: donation._id, // You can use your backend order ID here
+      handler: async function (response) {
+        // Step 4: Once payment is successful, verify payment with backend
+        try {
+          const verifyResponse = await axios.post(
+            "http://localhost:5000/api/donations/verify", // Backend payment verification route
+            {
+              paymentReference: response.razorpay_payment_id,
+              donationId: donation._id,
+              paymentStatus: "success",
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("user")}`,
+              },
+            }
+          );
+
+          if (verifyResponse.status === 200) {
+            alert("Payment verified successfully!");
+            navigate("/dashboard");
+          }
+        } catch (error) {
+          console.error("Payment verification failed:", error);
+          alert("Payment verification failed. Please try again.");
+        }
+      },
+      prefill: {
+        name: "Donor Name", // You can fetch the user's name dynamically
+        email: "donor@example.com", // You can fetch the user's email dynamically
+      },
+      notes: {
+        campaignId,
+      },
+      theme: {
+        color: "#F37254",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
+
   return (
-    
     <div className="donate-container">
       <h2>Donate to Campaign</h2>
       <form onSubmit={handleDonate}>
