@@ -1,129 +1,113 @@
-/* Full-screen Create Campaign Page */
+/* CreateCampaign.css */
+
+/* Apply the background gradient to the entire page */
+body {
+  background: linear-gradient(to right, #141e30, #243b55);
+  font-family: 'Roboto', sans-serif;
+  margin-top: 78px;
+  margin-bottom: 50px;
+  padding: 0;
+  color: #fff; /* Set default text color to white for contrast */
+  display: auto;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Ensure the body takes up the full viewport height */
+}
+
+/* Container for the form */
 .create-campaign-container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to right, #141e30, #243b55);
-  }
+  width: 100%;
+  max-width: 600px;
+  background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent background */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   
-  /* Create Campaign Box */
-  .create-campaign-box {
-    background: #ffffff;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    text-align: center;
-  }
-  
-  /* Heading */
-  .create-campaign-box h2 {
-    margin-bottom: 30px;
-    font-size: 24px;
-    color: #333;
-  }
-  
-  /* Input Group Container */
-  .input-group-container {
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 15px;
-    background: #f9f9f9;
-  }
-  
-  /* Label */
-  .input-group-container label {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 10px;
-    display: block;
-  }
-  
-  /* Input Fields */
-  .input-group-container input,
-  .input-group-container textarea,
-  .input-group-container select {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    background: #ffffff;
-    margin-top: 8px;
-    margin-bottom: 10px;
-    outline: none;
-  }
-  
-  /* Input Focus Effect */
-  .input-group-container input:focus,
-  .input-group-container textarea:focus,
-  .input-group-container select:focus {
-    border-color: #007bff;
-  }
-  
-  /* File Input Box */
-  .input-group-container .file-upload {
-    width: 100%;
+ 
+}
+/* Form title */
+h2 {
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+/* Styling for the form */
+.campaign-form {
+  width: 100%;
+}
+
+/* Form group styling */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Labels within the form */
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  color: #fff;
+}
+
+/* Input fields and textarea */
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #1e2a3a; /* Dark background for inputs */
+  color: #fff; /* White text for inputs */
+}
+
+/* Textarea specific styling */
+.form-group textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Submit button styling */
+.submit-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #5D8D98;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for the submit button */
+.submit-btn:hover {
+  background-color: #4a6e78;
+}
+
+/* Disabled state for the submit button */
+.submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .create-campaign-container {
     padding: 10px;
-    font-size: 16px;
-    background: #f1f1f1;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
-  
-  /* Create Campaign Button */
-  .create-campaign-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    background: #28a745;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s ease;
+
+  .campaign-form {
+    padding: 15px;
   }
-  
-  .create-campaign-btn:hover {
-    background: #218838;
+
+  .form-group input,
+  .form-group textarea {
+    padding: 8px;
+    font-size: 0.9rem;
   }
-  
-  /* Cancel Button */
-  .cancel-btn {
-    width: 100%;
-    padding: 12px;
-    font-size: 18px;
-    background: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s ease;
+
+  .submit-btn {
+    padding: 8px;
+    font-size: 1rem;
   }
-  
-  .cancel-btn:hover {
-    background: #c82333;
-  }
-  
-  /* Links */
-  .create-campaign-link {
-    margin-top: 15px;
-    font-size: 14px;
-  }
-  
-  .create-campaign-link a {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .create-campaign-link a:hover {
-    text-decoration: underline;
-  }
-  
+}

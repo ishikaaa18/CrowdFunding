@@ -53,6 +53,7 @@ const Donate = () => {
   };
 
   return (
+    
     <div className="donate-container">
       <h2>Donate to Campaign</h2>
       <form onSubmit={handleDonate}>
