@@ -10,7 +10,7 @@ const campaignSchema = new mongoose.Schema(
     image: { type: String },
     creator: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     isFeatured: { type: Boolean, default: false }, 
-    category: { type: String, required: true }
+    
   },
   { timestamps: true }
 );
